@@ -13,52 +13,134 @@ import "medium-zoom/dist/style.css";
 
 let route = Astro.url.pathname;
 
-const { locale = i18n?.defaultLocale, title: subtitle, description = config.description, article } = Astro.props;
+const {
+  locale = i18n?.defaultLocale,
+  title: subtitle,
+  description = config.description,
+  article,
+} = Astro.props;
 const title = config.title;
 ---
 
+<!-- ✅ 引入字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Spectral:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Inter:wght@400;500;600&family=Parisienne&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  :root {
+    --font-title: "Cormorant Garamond", "Times New Roman", Times, serif;
+    --font-subtitle: "Parisienne", "Cormorant Garamond", serif;
+    --font-body: "Spectral", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+    --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", "Noto Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --body-size: 17px;
+    --body-leading: 1.7;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--body-size);
+    line-height: var(--body-leading);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color: #111;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-title);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    margin: 1.6em 0 0.6em;
+  }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+  h2 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); }
+  h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
+
+  .subtitle,
+  .tagline {
+    font-family: var(--font-subtitle);
+    font-weight: 400;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    letter-spacing: 0.03em;
+    line-height: 1.45;
+    color: #222;
+    opacity: 0.9;
+  }
+
+  nav, button, input, select, textarea, .ui-text {
+    font-family: var(--font-ui);
+    letter-spacing: 0.01em;
+  }
+
+  main p {
+    margin: 0 0 1.05em;
+    letter-spacing: 0.003em;
+  }
+
+  blockquote {
+    margin: 1.2em 0;
+    padding-left: 1em;
+    border-left: 3px solid #e6e6e6;
+    color: #444;
+    font-style: italic;
+  }
+
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95em;
+  }
+</style>
+
 <script>
-	import zoom from "medium-zoom/dist/pure";
-
-	window.zoom = () => zoom(".markdown img", { background: "#00000044" });
-	window.zoom();
-
-	document.addEventListener("astro:page-load", () => {
-		window.zoom();
-	});
+  import zoom from "medium-zoom/dist/pure";
+  window.zoom = () => zoom(".markdown img", { background: "#00000044" });
+  window.zoom();
+  document.addEventListener("astro:page-load", () => { window.zoom(); });
 </script>
 
-<App {title} {subtitle} {description} {article} author={typeof config.author == "string" ? config.author : config.author.name}>
-	<Tip client:load>
-		<Icon name="lucide:info" slot="information" is:inline />
-		<Icon name="lucide:circle-check" slot="success" is:inline />
-		<Icon name="lucide:circle-question-mark" slot="question" is:inline />
-		<Icon name="lucide:circle-alert" slot="warning" is:inline />
-		<Icon name="lucide:circle-x" slot="error" is:inline />
-		<Icon name="lucide:x" slot="x" is:inline />
-	</Tip>
-	<div class="flex flex-col mx-a px-3 w-[min(100%,1000px)]">
-		<div id="body" class="flex flex-col min-h-screen">
-			<header class="sticky top-0 flex items-center justify-between pt-3 pb-1 mb-4 bg-background z-2 sm:(static pb-12)">
-				<a href={getRelativeLocaleUrl(locale)} class="text-size-lg sm:text-size-2xl font-bold">{title}</a>
+<App {title} {subtitle} {description} {article}
+  author={typeof config.author == "string" ? config.author : config.author.name}
+>
+  <Tip client:load>
+    <Icon name="lucide:info" slot="information" is:inline />
+    <Icon name="lucide:circle-check" slot="success" is:inline />
+    <Icon name="lucide:circle-question-mark" slot="question" is:inline />
+    <Icon name="lucide:circle-alert" slot="warning" is:inline />
+    <Icon name="lucide:circle-x" slot="error" is:inline />
+    <Icon name="lucide:x" slot="x" is:inline />
+  </Tip>
 
-				<Navigator {locale} {route} client:load>
-					<Icon name="lucide:tent" slot="home" is:inline />
-					<Icon name="lucide:list" slot="note" />
-					<Icon name="lucide:at-sign" slot="about" />
-					<Icon name="lucide:feather" slot="jotting" />
-					<Icon name="lucide:earth" slot="globe" />
-					<Icon name="lucide:rss" slot="rss" />
-					<Icon name="lucide:sun" slot="sun" />
-					<Icon name="lucide:moon" slot="moon" />
-					<Icon name="lucide:align-justify" slot="bars" />
-					<Icon name="lucide:x" slot="close" is:inline />
-				</Navigator>
-			</header>
+  <div class="flex flex-col mx-a px-3 w-[min(100%,1000px)]">
+    <div id="body" class="flex flex-col min-h-screen">
+      <header class="sticky top-0 flex items-center justify-between pt-3 pb-1 mb-4 bg-background z-2 sm:(static pb-12)">
+        <a
+          href={getRelativeLocaleUrl(locale)}
+          class="text-size-lg sm:text-size-2xl font-bold"
+          style="font-family: var(--font-title);"
+        >
+          {title}
+        </a>
 
-			<slot />
-		</div>
+        <!-- ✅ 仅保留需要的图标；已彻底移除 rss / sun / moon -->
+        <Navigator {locale} {route} client:load>
+          <Icon name="lucide:tent" slot="home" is:inline />
+          <Icon name="lucide:list" slot="note" />
+          <Icon name="lucide:at-sign" slot="about" />
+          <Icon name="lucide:feather" slot="jotting" />
+          <Icon name="lucide:earth" slot="globe" />
+          <Icon name="lucide:align-justify" slot="bars" />
+          <Icon name="lucide:x" slot="close" is:inline />
+        </Navigator>
+      </header>
 
-		<Footer {locale} author={config.author} copyright={config.copyright} />
-	</div>
+      <slot />
+    </div>
+
+    <Footer {locale} author={config.author} copyright={config.copyright} />
+  </div>
 </App>

@@ -1,69 +1,69 @@
-<button class="items-center" aria-label="Toggle dark theme" onclick={trigger_dark}>
-	{#if dark}
-		{@render moon()}
-	{:else}
-		{@render sun()}
-	{/if}
-</button>
+<!-- src/layouts/header/ThemeSwitcher.svelte -->
+{#if toggleEnabled}
+  <!-- 同时有 sun 与 moon 槽：启用切换按钮 -->
+  <button class="items-center" aria-label="Toggle dark theme" onclick={trigger_dark}>
+    {#if dark}
+      {@render moon()}
+    {:else}
+      {@render sun()}
+    {/if}
+  </button>
+{:else if hasMoon}
+  <!-- 只有 moon 槽：静态显示月亮图标，不可点击 -->
+  <span class="items-center" aria-hidden="true">
+    {@render moon()}
+  </span>
+{/if}
 
 <script lang="ts">
-	import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-	let { sun, moon, dark = $bindable(false) } = $props();
+  // 允许 sun/moon 槽为可选；缺省为 undefined，避免 “is not a function”
+  let { sun = undefined, moon = undefined, dark = $bindable(false) } = $props();
 
-	/**
-	 * Apply theme to DOM and persist to localStorage
-	 * @param on whether to enable dark mode
-	 */
-	function turn_dark(on: boolean) {
-		let theme = (dark = on) ? "dark" : "light";
-		// Update CSS custom properties via data attribute
-		document.documentElement.dataset.theme = theme;
-		// Persist user preference across sessions
-		localStorage.setItem("theme", theme);
-	}
+  const hasSun = typeof sun === "function";
+  const hasMoon = typeof moon === "function";
+  const toggleEnabled = hasSun && hasMoon;
 
-	/**
-	 * Handle theme toggle with animated transition effect
-	 * @param event Mouse event for click coordinates
-	 */
-	function trigger_dark(event: MouseEvent) {
-		const trigger = () => turn_dark(!dark);
+  /** 应用主题并持久化 */
+  function turn_dark(on: boolean) {
+    let theme = (dark = on) ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }
 
-		let transition;
-		if (!(transition = document.startViewTransition?.(trigger))) return trigger(); // Compatibility check
+  /** 点击触发切换（仅在 toggleEnabled=true 时使用） */
+  function trigger_dark(event: MouseEvent) {
+    if (!toggleEnabled) return;
+    const trigger = () => turn_dark(!dark);
 
-		// Get click coordinates for radial animation origin
-		const x = event.clientX;
-		const y = event.clientY;
-		transition.ready.then(() => {
-			// Create expanding circle animation from click point
-			const path = [`circle(0% at ${x}px ${y}px)`, `circle(130% at ${x}px ${y}px)`];
-			document.documentElement.animate(
-				{
-					// Reverse animation direction based on theme transition
-					clipPath: dark ? [...path].reverse() : path
-				},
-				{
-					duration: 400,
-					easing: "ease-in",
-					// Keep end state after animation completes to avoid flicker
-					fill: "forwards",
-					// Target different pseudo-elements for incoming/outgoing content
-					pseudoElement: dark ? "::view-transition-old(root)" : "::view-transition-new(root)"
-				}
-			);
-		});
-	}
+    let transition;
+    if (!(transition = document.startViewTransition?.(trigger))) return trigger();
 
-	onMount(() => {
-		// Detect system color scheme preference
-		const mode = window.matchMedia("(prefers-color-scheme: dark)");
-		const theme = localStorage.getItem("theme");
+    const x = event.clientX;
+    const y = event.clientY;
+    transition.ready.then(() => {
+      const path = [`circle(0% at ${x}px ${y}px)`, `circle(130% at ${x}px ${y}px)`];
+      document.documentElement.animate(
+        { clipPath: dark ? [...path].reverse() : path },
+        {
+          duration: 400,
+          easing: "ease-in",
+          fill: "forwards",
+          pseudoElement: dark ? "::view-transition-old(root)" : "::view-transition-new(root)"
+        }
+      );
+    });
+  }
 
-		// Use stored preference or fallback to system preference
-		turn_dark(theme ? theme == "dark" : mode.matches);
-		// Listen for system theme changes and apply automatically
-		mode.addEventListener("change", ({ matches }) => turn_dark(matches));
-	});
+  onMount(() => {
+    const mode = window.matchMedia("(prefers-color-scheme: dark)");
+    const theme = localStorage.getItem("theme");
+    turn_dark(theme ? theme == "dark" : mode.matches);
+    mode.addEventListener("change", ({ matches }) => turn_dark(matches));
+  });
 </script>
+
+<style>
+/* 可留空或写按钮的极简样式；不要出现 header/nav 的选择器 */
+</style>

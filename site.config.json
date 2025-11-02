@@ -1,12 +1,12 @@
 {
-	"title": "ThoughtLite",
-	"prologue": "If you need a website\nthat loads fast and has great SEO, then Astro is for you.",
+	"title": "Jade's Literature of Nonsense",
+	"prologue": "Casual thoughts, pretending to be literature.",
 	"author": {
-		"name": "Your Name",
-		"email": "hi@your.mail",
-		"link": "https://your.website"
+		"name": "Shiyu WANG",
+		"email": "wangshiyu819@gmail.com",
+		"link": "https://jade-blog.example.com"
 	},
-	"description": "A modern Astro theme focused on content creation.",
+	"description": "Thoughts, quietly kept.",
 	"copyright": {
 		"type": "CC BY-NC-ND 4.0",
 		"year": "2025"

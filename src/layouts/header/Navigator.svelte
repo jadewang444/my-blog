@@ -114,9 +114,17 @@
 
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div role="button" onclick={() => (menu = false)} class:pointer-events-none={!menu} class:bg-transparent={!menu} class="fixed top-0 left-0 w-screen h-screen pointer-events-auto bg-#aaaaaa88 transition-background-color sm:hidden"></div>
+<div
+	role="button"
+	onclick={() => (menu = false)}
+	class:pointer-events-none={!menu}
+	class:bg-transparent={!menu}
+	class="fixed top-0 left-0 w-screen h-screen pointer-events-auto bg-#aaaaaa88 transition-background-color sm:hidden"></div>
 
-<nav bind:this={navigator} class:transform-translate-x-full={!menu} class="fixed top-0 right-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
+<nav
+	bind:this={navigator}
+	class:transform-translate-x-full={!menu}
+	class="fixed top-0 right-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
 	<header class="grid gap-5 c-secondary grid-rows-[repeat(5,1fr)] sm:(grid-rows-none grid-cols-[repeat(4,1fr)])">
 		<button onclick={() => (menu = false)} class="sm:hidden">{@render close()}</button>
 
@@ -139,16 +147,17 @@
 	</header>
 
 	<footer class="flex flex-col gap-2 sm:gap-5 sm:(flex-row gap-7)">
-		<ThemeSwitcher {sun} {moon} />
-
-		<a href={getRelativeLocaleUrl(locale, "/feed.xml")} target="_blank" aria-label="Subscription" class="inline-flex">{@render rss()}</a>
+		<!-- ❌ 已移除 ThemeSwitcher（sun/moon） -->
+		<!-- ❌ 已移除 RSS 订阅按钮 -->
 
 		<Menu label="Language switcher">
-			{#snippet trigger()}{@render globe()}{/snippet}
+			{#snippet trigger()}
+				{#if globe}{@render globe()}{/if}
+			{/snippet}
 			<div data-no-swup class="contents">
 				<a href={getRelativeLocaleUrl("en", path)} aria-label="English">English</a>
 				<a href={getRelativeLocaleUrl("zh-cn", path)} aria-label="简体中文">简体中文</a>
-				<a href={getRelativeLocaleUrl("ja", path)} aria-label="日本語">日本語</a>
+				<!-- ❌ 已移除日语 -->
 			</div>
 		</Menu>
 	</footer>
@@ -161,10 +170,30 @@
 	import { getRelativeLocaleUrl } from "astro:i18n";
 	import { onMount, type Snippet } from "svelte";
 	import i18nit from "$i18n";
-	import ThemeSwitcher from "./ThemeSwitcher.svelte";
+	// ❌ 移除 ThemeSwitcher 引用
 	import Menu from "./Menu.svelte";
 
-	let { locale, route, home, note, jotting, about, globe, rss, sun, moon, bars, close }: { locale: string; route: string } & { [key: string]: Snippet } = $props();
+	let {
+		locale,
+		route,
+		home,
+		note,
+		jotting,
+		about,
+		globe, // 可选
+		bars,
+		close
+	}: {
+		locale: string;
+		route: string;
+		home: Snippet;
+		note: Snippet;
+		jotting: Snippet;
+		about: Snippet;
+		bars: Snippet;
+		close: Snippet;
+		globe?: Snippet;
+	} = $props();
 
 	const t = i18nit(locale);
 
