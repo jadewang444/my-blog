@@ -37,24 +37,7 @@ export const GET: APIRoute = async ({ site, params }) => {
 	// Aggregate items from specified sections
 	let items = [];
 
-	if (config.feed?.section?.includes("note") || config.feed?.section === "*" || config.feed?.section === undefined) {
-		let notes = (await getCollection("note", note => {
-			// Extract language from the file path structure
-			const [locale, ...id] = note.id.split("/");
-
-			// Attach locale and link
-			(<any>note).link = new URL(getRelativeLocaleUrl(locale, `/note/${id.join("/")}`), site).toString();
-
-			// Apply filtering criteria
-			let published = !note.data.draft;		// Exclude draft posts
-			let localed = language == locale;		// Language filter
-
-			// Include note only if it passes all filters
-			return published && localed;
-		}));
-
-		items.push(...notes);
-	}
+		// 'note' section removed — only include jottings (and other sections configured)
 
 	if (config.feed?.section?.includes("jotting") || config.feed?.section === "*" || config.feed?.section === undefined) {
 		let jottings = (await getCollection("jotting", jotting => {

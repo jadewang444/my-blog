@@ -34,7 +34,9 @@ const chronicles = Object.entries<string[]>(chronicle ?? {})
 			h1 {
 				margin-bottom: 1rem;
 
-				font-size: 1.8rem;
+				/* Make introduction/roll headings only slightly larger than body text */
+				font-size: calc(var(--body-size) * 1.05);
+				font-weight: 600;
 			}
 		}
 	}

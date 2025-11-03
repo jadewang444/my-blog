@@ -67,7 +67,7 @@ Customize site configuration and internationalization (i18n) by modifying the fo
 - `astro.config.ts`
 - `site.config.json`
 
-For details, refer to the [Configuration Guide](src/content/note/en/configuration.md).
+For details, refer to the site configuration files (`astro.config.ts`, `site.config.json`) and the content examples in `src/content` (for example `jotting`, `preface`, `information`).
 
 ## 💻 Commands
 
@@ -104,12 +104,12 @@ npm install
 
 Content creation is centralized in the `src/content` directory, mainly including:
 
-- `note` - Notes, focused on carefully crafted and detailed long-form works
+-- `jotting` - Jottings, lightweight and immediate content recording
 - `jotting` - Jottings, lightweight and immediate content recording
 - `preface` - Preface, displayed on the homepage as the first impression
 - `information` - Information, containing various descriptive content
 
-All content sections support multiple languages. Create the corresponding language directory to start creating content. For details, refer to the [Content Creation Guide](src/content/note/en/content.md).
+All content sections support multiple languages. Create the corresponding language directory to start creating content. For examples, see the `src/content/jotting`, `src/content/preface`, and `src/content/information` directories.
 
 ## 🤝 Contributing
 

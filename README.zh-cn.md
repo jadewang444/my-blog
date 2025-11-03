@@ -67,7 +67,7 @@ npm run dev
 - `astro.config.ts`
 - `site.config.json`
 
-详情请参阅[配置指南](src/content/note/zh-cn/configuration.md)。
+有关详细信息，请查看站点配置文件（`astro.config.ts`、`site.config.json`）以及 `src/content` 下的示例目录（例如 `jotting`、`preface`、`information`）。
 
 ## 💻 命令
 
@@ -104,12 +104,11 @@ npm install
 
 创作内容集中在 `src/content` 目录下，主要包含以下部分：
 
-- `note` - 文记，专注于精心构思、内容详实的长篇作品
 - `jotting` - 随笔，轻量级、即时性的内容记录
 - `preface` - 前言，作为第一印象在站点首页展示
 - `information` - 信息，包含各类说明性内容
 
-所有内容区块均支持多语言，创建对应语言目录后即可开始创作，详情请参阅[内容创作指南](src/content/note/zh-cn/content.md)。
+所有内容区块均支持多语言，创建对应语言目录后即可开始创作。请参阅 `src/content/jotting`, `src/content/preface` 和 `src/content/information` 获取示例。
 
 ## 🤝 贡献
 
