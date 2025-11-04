@@ -62,22 +62,22 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
       preface && (
         <section class="flex flex-col">
           {/* Lines 1–2: tagline (left) and date (right) as a compact unit with no blank line */}
-          <div class="hero-lines" style="max-width:var(--content-max-width,780px); margin-left:auto; margin-right:auto;">
+          <div class="hero-lines">
             <!-- Line 1: Tagline (left-aligned) -->
-            <article class="markdown hero-tagline" style="margin:0; text-align:left;">
+            <article class="markdown hero-tagline">
               <Content />
             </article>
 
-            <!-- Line 2: Date (right-aligned, immediately below tagline with small gap) -->
-            <div class="preface-date" style="margin:0; text-align:right; margin-top:0.3em;">
+            <!-- Line 2: Date (right-aligned, same unit) -->
+            <div class="preface-date">
               Nov 1, 2025
             </div>
           </div>
 
-          <!-- Line 3: CTA block — centered, matching tagline typography for the sentence -->
-          <div class="cta-block" style="margin-block-start: clamp(3rem,6vw,4rem); text-align:center;">
-            <p class="cta-sentence" style="margin:0 0 1.15em; font-family:var(--font-body); font-size:20px; font-weight:400; line-height:1.9;">If you want to know more about me ...</p>
-            <a class="home-link cta-link" href={atTwentyFiveUrl} style="display:inline-block; font-family:var(--font-body); font-size:18px; font-weight:400; text-decoration:underline;">At Twenty-Five</a>
+          <!-- Line 3: CTA block — centered -->
+          <div class="cta-block">
+            <p class="cta-sentence">If you want to know more about me ...</p>
+            <a class="home-link cta-link" href={atTwentyFiveUrl}>At Twenty-Five</a>
           </div>
         </section>
       )

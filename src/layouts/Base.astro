@@ -86,11 +86,9 @@ const title = config.title;
     line-height: 1.9; /* more breathing space */
     color: #333; /* a touch softer than pure black */
     opacity: 0.92; /* slightly muted */
-    text-align: center;
-    margin-bottom: 1.2rem; /* extra gap below the hero */
+    text-align: left;
+    margin: 0; /* reset; spacing handled by container */
     max-width: 70ch; /* limit line length for better legibility */
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .preface-date {
@@ -100,8 +98,10 @@ const title = config.title;
     font-weight: 400;
     color: var(--weak-color);
     opacity: 0.9;
-    margin-top: 0.6rem; /* space between tagline and date */
+    margin: 0;
     letter-spacing: 0.02em;
+    /* default alignment — container will place this on the right in desktop */
+    text-align: right;
   }
 
   /* Home page profile photo styling — refined, slightly smaller, and minimalist */
@@ -169,6 +169,61 @@ const title = config.title;
     .spacious {
       margin-block: clamp(28px, 6vw, 72px);
       text-align: center;
+    }
+
+    /* Hero layout container: group tagline + date as one compact unit */
+    .hero-lines {
+      max-width: var(--content-max-width, 780px);
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      display: flex;
+      align-items: flex-start; /* keep date aligned to the top of the tagline */
+      justify-content: space-between; /* tagline left, date right on the same row */
+      gap: 0.3em; /* small internal gap */
+      padding-inline: 1rem; /* small breathing room inside the unit */
+    }
+
+    /* Ensure the tagline flexes while the date keeps its intrinsic size */
+    .hero-lines .hero-tagline { flex: 1 1 auto; }
+    .hero-lines .preface-date { flex: 0 0 auto; align-self: flex-start; }
+
+    /* CTA block styling */
+    .cta-block {
+      margin-block-start: clamp(2.5rem, 6vw, 4rem); /* desktop ~3.5-4rem, mobile scales down */
+      text-align: center;
+    }
+
+    .cta-sentence {
+      margin: 0 0 1.15em 0; /* gap to the link (≈1–1.5em) */
+      font-family: var(--font-body);
+      font-size: 20px; /* same as tagline */
+      font-weight: 400;
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    .cta-link {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 18px; /* one size smaller than tagline */
+      font-weight: 400;
+      text-decoration: underline;
+      margin: 0;
+    }
+
+    /* Responsive: stack on mobile but keep the same left/right alignments within the stacked unit */
+    @media (max-width: 1023px) {
+      .hero-lines {
+        flex-direction: column;
+        align-items: stretch;
+        padding-inline: 0.5rem;
+      }
+
+      .hero-lines .hero-tagline { text-align: left; }
+      .hero-lines .preface-date { text-align: right; align-self: stretch; margin-top: 0.3em; }
+
+      .cta-block { margin-block-start: clamp(2.5rem, 6vw, 3rem); }
     }
 
     /* make the home date visually centered and spaced from following content */
