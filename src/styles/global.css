@@ -3,8 +3,8 @@
   --ink:#1a1a1a; --ink-2:#6a6a6a; --bg:#fff;
   --measure:68ch;
   /* vertical rhythm between main blocks (hero / quote / CTA / copyright) */
-  /* Option A+ — A+ elegant relaxed (updated per request) */
-  --cover-rhythm: clamp(56px, 6.5vh, 72px);
+  /* Option A+ refined — floor nudged +4px for subtle lift */
+  --cover-rhythm: clamp(60px, 6.5vh, 72px);
 }
 html{font-size:18px}
 body{
