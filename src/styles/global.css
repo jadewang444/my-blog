@@ -2,6 +2,8 @@
   --font: "Cormorant Garamond", serif;
   --ink:#1a1a1a; --ink-2:#6a6a6a; --bg:#fff;
   --measure:68ch;
+  /* vertical rhythm between main blocks (hero / quote / CTA / copyright) */
+  --cover-rhythm: clamp(56px, 10vh, 140px);
 }
 html{font-size:18px}
 body{
@@ -21,7 +23,7 @@ header.site-title{
   font-size:0.98rem; font-weight:500; letter-spacing:0.04em;
   text-transform:uppercase; margin:0 0 2.25rem 0;
 }
-figure.hero{display:flex; justify-content:center; margin:0 0 2rem 0;}
+figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm) 0;}
 .hero img{
   width:clamp(520px,60vw,760px); height:auto;
   border-radius:12px;
@@ -30,42 +32,22 @@ figure.hero{display:flex; justify-content:center; margin:0 0 2rem 0;}
 /* Shift image+quote slightly upward using negative margin on main grid item */
 .cover{align-content:start}
 .cover{row-gap:0}
-.quote{max-width:var(--measure); margin:1rem auto 5.25rem;}
+.quote{max-width:var(--measure); margin:0 auto var(--cover-rhythm);}
 .quote-text{
   margin:0 0 .4rem 0; text-align:left; font-style:italic; 
   font-variant-numeric: oldstyle-nums;
 }
 .quote-date{margin:0; text-align:right; color:var(--ink-2)}
-.site-footer{text-align:center; margin-top:6rem}
-.cta{margin:0 0 1lh 0}
-.byline{margin:1lh 0 0 0; font-size:.95rem; letter-spacing:.02em}
+.site-footer.container{margin:0 auto var(--cover-rhythm); text-align:center}
+.cta{margin:0 0 0 0}
+.byline{margin:0 0 0 0; font-size:.95rem; letter-spacing:.02em}
 
-/* Corner crop marks */
-.container::before, .container::after,
-.container:has(+ footer)::before, .container:has(+ footer)::after{content:""}
-.container::before, .container::after{
-  position:absolute; width:18px; height:18px; top:-24px; 
-  background:
-    linear-gradient(var(--ink) 0 0) left top/1px 12px no-repeat,
-    linear-gradient(var(--ink) 0 0) left top/12px 1px no-repeat,
-    linear-gradient(var(--ink) 0 0) right top/1px 12px no-repeat,
-    linear-gradient(var(--ink) 0 0) right top/12px 1px no-repeat;
-  opacity:.18; left:-24px; right:auto;
-}
-.container::after{
-  left:auto; right:-24px;
-}
-.site-footer::before, .site-footer::after{
-  content:""; position:absolute; width:18px; height:18px; bottom:-24px;
-  background:
-    linear-gradient(var(--ink) 0 0) left bottom/1px 12px no-repeat,
-    linear-gradient(var(--ink) 0 0) left bottom/12px 1px no-repeat,
-    linear-gradient(var(--ink) 0 0) right bottom/1px 12px no-repeat,
-    linear-gradient(var(--ink) 0 0) right bottom/12px 1px no-repeat;
-  opacity:.18; left:calc(50% - 420px); /* aligns with container edges */
-}
-.site-footer{position:relative}
-.site-footer::after{left:auto; right:calc(50% - 420px)}
+/* removed corner crop marks per design decision */
+
+/* ensure the composition rhythm between main blocks is even and airy
+   hero -> quote -> CTA -> site copyright */
+.site-copyright{display:block; margin-top:0}
+
 
 /* Responsive: on small screens, keep elegance and stack date under quote left-aligned */
 @media (max-width:720px){
