@@ -28,7 +28,7 @@ const t = i18nit(locale);
 <Base title={jotting.data.title} {locale} description={jotting.data.description} article={{ timestamp: jotting.data.timestamp, tags: jotting.data.tags }}>
 	<main class="flex flex-col gap-6">
 		<header class="flex flex-col gap-4">
-			<h1 class="text-3xl">{jotting.data.title}</h1>
+			<h1 class="text-3xl" style="font-weight:400;text-align:center">{jotting.data.title}</h1>
 			<div class="flex flex-col gap-3 sm:flex-row children:(flex items-center gap-1 text-3.5 c-secondary)">
 				<time title={Time.full(jotting.data.timestamp)}><Icon name="lucide:calendar" />{Time(jotting.data.timestamp)}</time>
 				{
@@ -39,7 +39,12 @@ const t = i18nit(locale);
 						</span>
 					)
 				}
-				<span><Icon name="lucide:pilcrow" />{t("read.words", { words: frontmatter.words })}</span>
+				{
+					// hide word-count for the 'At Twenty-Five' article to keep header minimal
+					!(jotting.id && jotting.id.endsWith('at-twenty-five')) && (
+						<span><Icon name="lucide:pilcrow" />{t("read.words", { words: frontmatter.words })}</span>
+					)
+				}
 			</div>
 			<hr class="b-b b-b-solid b-weak" />
 		</header>
