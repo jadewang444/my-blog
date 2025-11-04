@@ -61,17 +61,20 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
     {
       preface && (
         <section class="flex flex-col">
-          <article class="markdown hero-tagline">
-            <Content />
-          </article>
-          <div class="preface-date text-center" style="margin-block-end: clamp(18px,4vw,48px);">
-            Nov 1, 2025
+          {/* Lines 1–2: tagline (left) and date (right) as a compact unit with no blank line */}
+          <div class="hero-lines" style="max-width:var(--content-max-width,780px);">
+            <article class="markdown hero-tagline" style="margin:0; text-align:left;">
+              <Content />
+            </article>
+            <div class="preface-date" style="margin:0; text-align:right;">
+              Nov 1, 2025
+            </div>
           </div>
 
-          <!-- Centered invitation and link to the At Twenty-Five jotting -->
-          <div class="spacious">
-            <p class="subtitle">if you want to know more about me ...</p>
-            <a class="home-link subtitle" href={atTwentyFiveUrl}>At Twenty-Five</a>
+          {/* Line 3: generous vertical spacing, then centered CTA sentence + link */}
+          <div class="cta-block" style="margin-block-start: clamp(28px,6vw,96px); text-align:center;">
+            <p class="subtitle" style="margin:0 0 12px;">if you want to know more about me ...</p>
+            <a class="home-link subtitle" href={atTwentyFiveUrl} style="display:inline-block;">At Twenty-Five</a>
           </div>
         </section>
       )
