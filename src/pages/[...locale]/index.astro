@@ -66,8 +66,6 @@ const { Content } = preface ? await render(preface) : ({} as any);
       )
     }
 
-    <section class="flex items-center justify-center flex-wrap-reverse gap-10">
-      <Heatmap {locale} notes={[]} {jottings} />
-    </section>
+    <!-- Heatmap removed per request: remove rectangular grid at bottom of home -->
   </main>
 </Base>

@@ -97,12 +97,12 @@ const title = config.title;
     opacity: 0.9;
   }
 
-  /* Home page profile photo styling: centered, automatically scaled, elegant */
+  /* Home page profile photo styling: centered, approx. 500px width, responsive */
   .home-photo {
     display: block;
     margin: 0 auto; /* center horizontally */
-    width: 55%; /* use 55% of the container as requested */
-    max-width: 420px; /* keep an upper cap for very wide screens */
+    width: 500px; /* target ~500px width */
+    max-width: 90%; /* responsive cap so it shrinks on small screens */
     height: auto;
     border-radius: 50%;
     object-fit: cover;
@@ -114,8 +114,8 @@ const title = config.title;
   /* Mobile: ensure the photo stays comfortable on small screens */
   @media (max-width: 640px) {
     .home-photo {
-      width: 70%;
-      max-width: 260px;
+      width: 320px;
+      max-width: 80%;
     }
   }
 
