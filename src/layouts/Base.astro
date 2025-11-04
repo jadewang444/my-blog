@@ -165,10 +165,20 @@ const title = config.title;
   }
 
   /* Utility for generous airy spacing and centered content */
-  .spacious {
-    margin-block: clamp(28px, 6vw, 72px);
-    text-align: center;
-  }
+    .spacious {
+      margin-block: clamp(28px, 6vw, 72px);
+      text-align: center;
+    }
+
+    /* make the home date visually centered and spaced from following content */
+    .preface-date.text-center {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted, #666);
+      margin-block-start: 0.2rem;
+      margin-block-end: clamp(18px, 4vw, 48px);
+      font-size: 0.95rem;
+    }
 
   /* Home link style: underlined, inline and visually calm */
   .home-link {
