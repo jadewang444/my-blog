@@ -38,6 +38,8 @@ const jottings = await getCollection("jotting", jotting => {
 
 const preface = prefaces[0];
 const { Content } = preface ? await render(preface) : ({} as any);
+// Localized URL for the "At Twenty-Five" jotting
+const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
 ---
 
 <Base title={t("navigation.home")} {locale}>
@@ -53,6 +55,9 @@ const { Content } = preface ? await render(preface) : ({} as any);
       {/* ❌ 站点 Logo 已移除 */}
     </header>
 
+    <!-- generous spacer to keep the layout airy between the photo and the hero text -->
+    <div class="spacious" aria-hidden="true"></div>
+
     {
       preface && (
         <section class="flex flex-col">
@@ -61,6 +66,12 @@ const { Content } = preface ? await render(preface) : ({} as any);
           </article>
           <div class="preface-date self-end my-2">
             Nov 1, 2025
+          </div>
+
+          <!-- Centered invitation and link to the At Twenty-Five jotting -->
+          <div class="spacious">
+            <p class="subtitle">if you want to know more about me ...</p>
+            <a class="home-link subtitle" href={atTwentyFiveUrl}>At Twenty-Five</a>
           </div>
         </section>
       )
