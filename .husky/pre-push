@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run local build before allowing push. If build fails, abort push.
+npm run build

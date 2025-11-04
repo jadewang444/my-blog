@@ -25,6 +25,7 @@
 		"url": "https://github.com/tuyuritio"
 	},
 	"scripts": {
+		"prepare": "husky install",
 		"new": "tsx scripts/new.ts",
 		"dev": "astro dev",
 		"check": "astro check",
@@ -79,6 +80,7 @@
 		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
+		"husky": "^8.0.0",
 		"@astrojs/check": "^0.9.5",
 		"@clack/prompts": "^0.11.0",
 		"@rollup/plugin-yaml": "^4.1.2",
