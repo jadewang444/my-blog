@@ -43,13 +43,13 @@ const { Content } = preface ? await render(preface) : ({} as any);
 <Base title={t("navigation.home")} {locale}>
   <main class="flex flex-col gap-5 sm:gap-20 flex-grow">
     <header class="flex items-center justify-center flex-wrap-reverse grow-0.6">
-  {/* Personal photo: place your photo at `/public/me.png` — it will be centered and auto-scaled */}
-  <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" />
-      {config.prologue && (
-        <article class="mr-a font-cursive font-thin text-size-xs sm:text-size-sm whitespace-pre-line" style="line-height:1.8; color:#555; padding-left:0.5rem; padding-right:0.5rem;">
-          {config.prologue}
-        </article>
-      )}
+  {/* Personal photo: responsive WebP + PNG fallback; optimized variants live in /public */}
+  <picture>
+    <source type="image/webp" srcset="/me-960.webp 960w, /me-480.webp 480w" sizes="(max-width:640px) 88vw, 45vw" />
+    <source type="image/png" srcset="/me-960.png 960w, /me-480.opt.png 480w" sizes="(max-width:640px) 88vw, 45vw" />
+    <img src="/me-480.opt.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+  </picture>
+      
       {/* ❌ 站点 Logo 已移除 */}
     </header>
 
