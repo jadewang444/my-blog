@@ -178,15 +178,32 @@ const title = config.title;
       margin-right: auto;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr auto; /* tagline left, date right on one row */
+      /* Make the first column flexible but able to shrink when needed so the
+         right-hand date column (auto) never gets pushed below the tagline. */
+      grid-template-columns: minmax(0, 1fr) auto; /* tagline left, date right on one row */
       align-items: center;
-      gap: 0.3em; /* small internal gap */
-      padding-inline: 0.75rem; /* small breathing room inside the unit */
+      gap: 0.4em; /* slightly larger internal gap for clearer separation */
+      padding-inline: clamp(0.5rem, 2vw, 1rem); /* responsive breathing room */
     }
 
-    /* Ensure the tagline fills available space and the date stays to the right */
-    .hero-lines .hero-tagline { grid-column: 1 / 2; text-align: left; }
-    .hero-lines .preface-date { grid-column: 2 / 3; justify-self: end; }
+    /* Ensure the tagline fills available space, can wrap within its column,
+       and won't force the grid to expand beyond available width. */
+    .hero-lines .hero-tagline {
+      grid-column: 1 / 2;
+      text-align: left;
+      min-width: 0; /* allow the item to shrink inside the grid */
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+
+    /* Keep the date compact and anchored to the right. Prevent it from
+       wrapping onto multiple lines so it remains visually aligned with the
+       tagline on the same row. */
+    .hero-lines .preface-date {
+      grid-column: 2 / 3;
+      justify-self: end;
+      white-space: nowrap; /* keep the date on a single line */
+    }
 
     /* CTA block styling */
     .cta-block {
@@ -304,4 +321,3 @@ const title = config.title;
 
     <Footer {locale} author={config.author} copyright={config.copyright} />
   </div>
-</App>
