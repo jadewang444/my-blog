@@ -106,14 +106,14 @@ const title = config.title;
   /* Home page profile photo styling — refined, slightly smaller, and minimalist */
   .home-photo {
     display: block;
-    margin: 1.2rem auto; /* center horizontally with gentle breathing room */
-    width: 360px; /* slightly smaller for elegant balance */
-    max-width: 60%; /* scale down on narrower viewports */
+    margin: 1rem auto; /* center horizontally with gentle breathing room */
+    width: 260px; /* reduced to 260px for a subtler, refined appearance */
+    max-width: 48%; /* scale down on narrower viewports */
     height: auto;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08); /* softer shadow */
-    border: 1px solid rgba(255,255,255,0.85); /* subtle frame */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* even softer shadow */
+    border: 1px solid rgba(255,255,255,0.9); /* subtle frame */
     transition: transform 240ms ease, box-shadow 240ms ease;
     transform-origin: center;
   }
@@ -121,17 +121,17 @@ const title = config.title;
   /* Subtle hover (desktop) to add a touch of polish without drawing attention */
   @media (hover: hover) and (pointer: fine) {
     .home-photo:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.09);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
   }
 
   /* Mobile: ensure the photo stays comfortable on small screens */
   @media (max-width: 640px) {
     .home-photo {
-      width: 46%;
-      max-width: 280px;
-      margin: 1rem auto;
+      width: 40%;
+      max-width: 220px;
+      margin: 0.8rem auto;
     }
   }
 
