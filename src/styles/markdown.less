@@ -4,16 +4,26 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		gap: 0.8rem;
+		gap: 1.2rem;
 
 		width: 100%;
 	}
 
-	line-height: 1.75;
+	font-family: var(--font-body);
+	font-size: 18px;
+	font-weight: 400;
+	/* Slightly increased line-height for more airy, elegant reading */
+	line-height: 1.95;
+	letter-spacing: 0.003em;
 	word-wrap: break-word;
 
 	* {
 		user-select: text;
+	}
+
+	p {
+		/* Larger paragraph gap so the body text feels less tight */
+		margin-bottom: 1.5em;
 	}
 
 	h1,

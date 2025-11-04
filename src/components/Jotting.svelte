@@ -1,4 +1,25 @@
 <style lang="less">
+	/* Remove bold and force body font for items on the Jotting page */
+	/* Scoped to this component so other pages are unaffected */
+	:global(a.link) {
+		font-weight: 400 !important;
+		font-family: var(--font-body) !important;
+	}
+
+	:global(.font-600) {
+		font-weight: 400 !important;
+	}
+
+	:global(h3) {
+		font-weight: 400;
+		font-family: var(--font-body);
+	}
+
+	:global(strong), :global(b) {
+		font-weight: 400 !important;
+		font-family: var(--font-body) !important;
+	}
+
 	article {
 		footer {
 			button {

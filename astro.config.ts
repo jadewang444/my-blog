@@ -28,6 +28,7 @@ import katex from "rehype-katex";
 import figure from "rehype-figure";
 import sectionize from "@hbsnow/rehype-sectionize";
 
+import fixTextDirectives from "./src/utils/remark/fix-text-directives";
 import spoiler from "./src/utils/remark/spoiler";
 import abbr from "./src/utils/remark/abbr";
 import wrapper from "./src/utils/remark/table-wrapper";
@@ -39,7 +40,7 @@ export default defineConfig({
   site: "https://thought-lite.vercel.app",
   trailingSlash: "never",
   i18n: {
-    locales: ["en", "zh-cn", "ja"],
+    locales: ["en", "zh-cn"],
     defaultLocale: "en",
     routing: {
       redirectToDefaultLocale: false,
@@ -62,8 +63,9 @@ export default defineConfig({
       footnote,
       abbr,
       [table, { colspanWithEmpty: true }],
-      wrapper,
-      directive,
+  wrapper,
+  directive,
+  fixTextDirectives,
       ruby,
       [alerts, { legacyTitle: true }],
       reading

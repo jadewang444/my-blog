@@ -17,7 +17,8 @@ const jotting = defineCollection({
 		description: z.string().optional(),				// Brief description
 		sensitive: z.boolean().default(false),			// Marks content as sensitive
 		top: z.number().int().nonnegative().default(0),	// Top priority for sorting (higher is more important)
-		draft: z.boolean().default(false)				// Draft status
+		draft: z.boolean().default(false),				// Draft status
+		featured: z.boolean().default(false)			// Whether this is a featured article
 	})
 });
 

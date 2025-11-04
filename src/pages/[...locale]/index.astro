@@ -2,10 +2,8 @@
 import { i18n } from "astro:config/client";
 import { render, getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-// ❌ import { Icon } from "astro-icon/components"; // 不再使用站点 logo
 import Time from "$utils/time";
 import Base from "$layouts/Base.astro";
-import Heatmap from "$components/Heatmap.svelte";
 import config from "$config";
 import i18nit from "$i18n";
 
@@ -36,36 +34,49 @@ const jottings = await getCollection("jotting", jotting => {
   return !jotting.data.draft && language == locale;
 });
 
+// Get featured article
+const featuredArticle = jottings.find(article => article.data.featured);
+
 const preface = prefaces[0];
 const { Content } = preface ? await render(preface) : ({} as any);
 ---
 
 <Base title={t("navigation.home")} {locale}>
-  <main class="flex flex-col gap-5 sm:gap-20 flex-grow">
-    <header class="flex items-center justify-center flex-wrap-reverse grow-0.6">
-      {config.prologue && (
-        <article class="mr-a font-cursive font-thin text-size-xs sm:text-size-sm whitespace-pre-line" style="line-height:1.8; color:#555; padding-left:0.5rem; padding-right:0.5rem;">
-          {config.prologue}
-        </article>
-      )}
-      {/* ❌ 站点 Logo 已移除 */}
-    </header>
+  <main class="flex flex-col gap-24 sm:gap-32 flex-grow max-w-5xl mx-auto px-6 py-8">
+    
+    {/* Centered Large Photo */}
+    <section class="flex justify-center mt-8">
+      <img
+        src="/me.png"
+        alt="Profile"
+        class="shadow-sm"
+        style="width: 550px; max-width: 90vw; height: auto; object-fit: cover;"
+      />
+    </section>
 
+    {/* Preface Section with Date on Next Line, Right-Aligned */}
     {
       preface && (
-        <section class="flex flex-col">
+        <section class="flex flex-col gap-3">
           <article class="markdown">
             <Content />
           </article>
-          <a href={getRelativeLocaleUrl(locale, "/preface")} class="self-end my-2 text-size-sm c-secondary">
+          <a href={getRelativeLocaleUrl(locale, "/preface")} class="self-end text-gray-600" style="font-family: var(--font-body); font-size: 0.9rem;">
             —— {Time.date.locale(preface.data.timestamp, locale)}
           </a>
         </section>
       )
     }
 
-    <section class="flex items-center justify-center flex-wrap-reverse gap-10">
-      <Heatmap {locale} notes={[]} {jottings} />
-    </section>
+    {/* Featured Article Section - Centered */}
+    {featuredArticle && (
+      <section class="flex flex-col items-center gap-6 text-center">
+        <h2 class="font-normal text-gray-700" style="font-size: 21px;">If you want to know me...</h2>
+        <a href={getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`)} 
+           class="inline-block font-normal hover:text-gray-700 transition-colors" style="font-size: 18px;">
+          At Twenty-Five
+        </a>
+      </section>
+    )}
   </main>
 </Base>
