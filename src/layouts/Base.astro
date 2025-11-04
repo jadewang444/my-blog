@@ -177,16 +177,16 @@ const title = config.title;
       margin-left: auto;
       margin-right: auto;
       width: 100%;
-      display: flex;
-      align-items: flex-start; /* keep date aligned to the top of the tagline */
-      justify-content: space-between; /* tagline left, date right on the same row */
+      display: grid;
+      grid-template-columns: 1fr auto; /* tagline left, date right on one row */
+      align-items: center;
       gap: 0.3em; /* small internal gap */
-      padding-inline: 1rem; /* small breathing room inside the unit */
+      padding-inline: 0.75rem; /* small breathing room inside the unit */
     }
 
-    /* Ensure the tagline flexes while the date keeps its intrinsic size */
-    .hero-lines .hero-tagline { flex: 1 1 auto; }
-    .hero-lines .preface-date { flex: 0 0 auto; align-self: flex-start; }
+    /* Ensure the tagline fills available space and the date stays to the right */
+    .hero-lines .hero-tagline { grid-column: 1 / 2; text-align: left; }
+    .hero-lines .preface-date { grid-column: 2 / 3; justify-self: end; }
 
     /* CTA block styling */
     .cta-block {
@@ -214,14 +214,16 @@ const title = config.title;
 
     /* Responsive: stack on mobile but keep the same left/right alignments within the stacked unit */
     @media (max-width: 1023px) {
+
       .hero-lines {
-        flex-direction: column;
-        align-items: stretch;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
         padding-inline: 0.5rem;
       }
 
       .hero-lines .hero-tagline { text-align: left; }
-      .hero-lines .preface-date { text-align: right; align-self: stretch; margin-top: 0.3em; }
+      .hero-lines .preface-date { text-align: right; justify-self: end; margin-top: 0.3em; }
 
       .cta-block { margin-block-start: clamp(2.5rem, 6vw, 3rem); }
     }

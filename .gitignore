@@ -27,3 +27,4 @@ wrangler.toml
 
 # jetbrains setting folder
 .idea/
+.vercel
