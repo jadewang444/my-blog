@@ -21,6 +21,29 @@ Notes:
 USAGE
 }
 
+# Parse optional flags: --no-commit, --no-stage
+NO_COMMIT=0
+NO_STAGE=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-commit)
+      NO_COMMIT=1
+      shift
+      ;;
+    --no-stage)
+      NO_STAGE=1
+      shift
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
 BRANCH=${1:-"fix/time-directive-$(date +%Y%m%d)"}
 MSG=${2:-"fix(markdown): convert numeric text directives for time fragments; tighten regex"}
 
@@ -36,15 +59,23 @@ echo "Repository: $(git remote get-url origin 2>/dev/null || echo '(no origin)')
 
 STATUS=$(git status --porcelain)
 if [ -n "$STATUS" ]; then
-  echo "Uncommitted changes detected:" 
+  echo "Uncommitted changes detected:"
   git status --porcelain
   echo
-  read -p "Stage ALL changes and continue? [y/N] " ans
-  if [ "$ans" != "y" ]; then
-    echo "Aborting. Please stage/commit manually or run the script again when ready.";
-    exit 1
+  if [ "$NO_STAGE" -eq 1 ]; then
+    read -p "--no-stage specified: proceed WITHOUT staging changes? [y/N] " ans
+    if [ "$ans" != "y" ]; then
+      echo "Aborting. Please stage/commit manually or run the script again when ready.";
+      exit 1
+    fi
+  else
+    read -p "Stage ALL changes and continue? [y/N] " ans
+    if [ "$ans" != "y" ]; then
+      echo "Aborting. Please stage/commit manually or run the script again when ready.";
+      exit 1
+    fi
+    git add -A
   fi
-  git add -A
 else
   echo "No uncommitted changes. Proceeding with current index/state." 
 fi
@@ -61,12 +92,16 @@ else
   git checkout -B "$BRANCH"
 fi
 
-# commit if there are staged changes
-if git diff --staged --quiet; then
-  echo "No staged changes to commit (index clean)."
+# commit if there are staged changes and committing isn't disabled
+if [ "$NO_COMMIT" -eq 1 ]; then
+  echo "--no-commit specified: skipping git commit step."
 else
-  git commit -m "$MSG"
-  echo "Committed: $MSG"
+  if git diff --staged --quiet; then
+    echo "No staged changes to commit (index clean)."
+  else
+    git commit -m "$MSG"
+    echo "Committed: $MSG"
+  fi
 fi
 
 # push
