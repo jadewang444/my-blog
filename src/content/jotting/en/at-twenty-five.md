@@ -1,7 +1,7 @@
 ---
 title: "At Twenty-Five"
 date: "2025-11-03"
-timestamp: "2025-11-03T00:00:00.000Z"
+timestamp: 2025-11-03T00:00:00.000Z
 ---
 
 My name is Wang Shiyu. "Jade" is my English name, from "Yu," which means precious jade, and "Shi," which means poetry.
