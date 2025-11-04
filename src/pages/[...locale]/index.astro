@@ -56,12 +56,12 @@ const { Content } = preface ? await render(preface) : ({} as any);
     {
       preface && (
         <section class="flex flex-col">
-          <article class="markdown">
+          <article class="markdown hero-tagline">
             <Content />
           </article>
-          <a href={getRelativeLocaleUrl(locale, "/preface")} class="self-end my-2 text-size-sm c-secondary">
-            —— {Time.date.locale(preface.data.timestamp, locale)}
-          </a>
+          <div class="preface-date self-end my-2">
+            Nov 1, 2025
+          </div>
         </section>
       )
     }
