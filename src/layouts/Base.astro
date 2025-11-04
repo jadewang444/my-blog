@@ -94,11 +94,12 @@ const title = config.title;
   }
 
   .preface-date {
-    font-family: var(--font-body);
-    font-size: 18px; /* slightly smaller than the hero */
+    /* match footer copyright style: Spectral, normal weight, subtle tone */
+    font-family: 'Spectral', var(--font-body), serif;
+    font-size: 0.95rem; /* match footer small size */
     font-weight: 400;
-    color: #666; /* muted, lower visual weight */
-    opacity: 0.85;
+    color: var(--weak-color);
+    opacity: 0.9;
     margin-top: 0.6rem; /* space between tagline and date */
     letter-spacing: 0.02em;
   }
@@ -174,11 +175,23 @@ const title = config.title;
     .preface-date.text-center {
       text-align: center;
       font-variant-numeric: tabular-nums;
-      color: var(--muted, #666);
+      font-family: 'Spectral', var(--font-body), serif;
+      font-weight: 400;
+      color: var(--weak-color);
       margin-block-start: 0.2rem;
       margin-block-end: clamp(18px, 4vw, 48px);
       font-size: 0.95rem;
     }
+
+      /* style for article header date to match footer copyright */
+      .jotting-date {
+        font-family: 'Spectral', var(--font-body), serif;
+        font-size: 0.95rem;
+        font-weight: 400;
+        color: var(--weak-color);
+        opacity: 0.9;
+        letter-spacing: 0.02em;
+      }
 
   /* Home link style: underlined, inline and visually calm */
   .home-link {

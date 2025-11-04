@@ -13,14 +13,14 @@
 	/* Body text sizing & rhythm */
 	font-weight: 300; /* Light */
 	font-size: 18px;
-	line-height: 1.75;
+	line-height: 1.8;
 	word-wrap: break-word;
 
 	/* Page padding and measure for comfortable reading */
 	padding-block: clamp(64px, 14vw, 180px);
 	padding-inline: clamp(20px, 6vw, 140px);
-	/* target a reading measure around 750-800px on wide screens */
-	max-width: 800px;
+	/* target a reading measure around 760-780px on wide screens */
+	max-width: 780px;
 	margin-inline: auto;
 
 	* {
@@ -179,6 +179,8 @@
 		hyphens: auto;
 		/* keep last line left-aligned to avoid overly stretched single-line endings */
 		text-align-last: left;
+		/* gentle letter-spacing for elegance */
+		letter-spacing: 0.02em;
 	}
 
 	code {
