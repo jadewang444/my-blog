@@ -31,6 +31,7 @@
 		"check": "astro check",
 		"build": "astro build",
 		"deploy": "npm run build && git add -A && git commit -m \"chore(deploy): publish local edits\" || true && git push origin main",
+		"optimize:me": "node scripts/optimize-me.cjs",
 		"preview": "astro preview",
 		"update": "npx npm-check-updates --interactive",
 		"count": "git log --pretty=tformat: --numstat | grep -v package | awk '{ A += $1; S += $2; T += $1 - $2 } END { printf \"+ %s\tLines\\n- %s\tLines\\n= %s\tLines\\n\", A, S, T }'"
@@ -81,15 +82,16 @@
 		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
-		"husky": "^8.0.0",
 		"@astrojs/check": "^0.9.5",
 		"@clack/prompts": "^0.11.0",
 		"@rollup/plugin-yaml": "^4.1.2",
 		"@types/luxon": "^3.7.1",
 		"@unocss/reset": "^66.5.4",
+		"husky": "^8.0.0",
 		"less": "^4.4.2",
 		"prettier": "3.6.2",
 		"prettier-plugin-astro": "0.14.1",
+		"sharp": "^0.34.4",
 		"tsx": "^4.20.6",
 		"unocss": "^66.5.4"
 	}
