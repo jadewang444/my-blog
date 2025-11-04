@@ -100,13 +100,24 @@ const title = config.title;
   /* Home page profile photo styling: centered, automatically scaled, elegant */
   .home-photo {
     display: block;
-    margin: 1.25rem auto;
-    width: min(40vw, 320px);
+    margin: 1rem auto;
+    /* slightly smaller, capped width for aesthetic balance */
+    width: min(28vw, 220px);
+    max-width: 220px;
     height: auto;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    border: 3px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 2px solid rgba(255,255,255,0.65);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  /* Mobile: keep the photo compact */
+  @media (max-width: 640px) {
+    .home-photo {
+      width: min(34vw, 160px);
+      max-width: 160px;
+    }
   }
 
   nav, button, input, select, textarea, .ui-text {
