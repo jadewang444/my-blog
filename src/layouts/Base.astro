@@ -32,13 +32,15 @@ const title = config.title;
 
 <style>
   :root {
-    /* Use Marcellus as the primary serif for title and body (Soft Modern preset)
-       Keep --font-subtitle for the prologue (cursive) fallback */
-    --font-title: "Marcellus", "Cormorant Garamond", "Times New Roman", Times, serif;
+    /* Use Cormorant Garamond as the primary type across the site (user request).
+       Keep --font-subtitle for cursive/prologue fallback. Define --monospace for
+       the footer exception (copyright). */
+    --font-title: "Cormorant Garamond", "Marcellus", "Times New Roman", Times, serif;
     --font-subtitle: "Parisienne", "Cormorant Garamond", serif;
-    --font-body: "Marcellus", "Spectral", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+    --font-body: "Cormorant Garamond", "Spectral", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
     --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", "Noto Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --body-size: 16px;
+    --monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
+    --body-size: 16px;
     --body-leading: 1.7;
   }
 
@@ -46,6 +48,7 @@ const title = config.title;
     font-family: var(--font-body);
     font-size: var(--body-size);
     line-height: var(--body-leading);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -54,26 +57,37 @@ const title = config.title;
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-title);
-    font-weight: 600;
+    font-weight: 400; /* use Regular 400 per design request */
     line-height: 1.15;
     letter-spacing: 0.01em;
     margin: 1.6em 0 0.6em;
   }
-  /* Keep headings modest: only slightly larger than body for 'Introduction' and 'Link Roll' */
-  /* Use 1.05 multiplier for a very subtle hierarchy */
-  h1 { font-size: calc(var(--body-size) * 1.05); }
+  /* Make the main H1 prominent and match the requested size/weight */
+  h1 { font-size: 32px; font-weight: 400; }
   h2 { font-size: calc(var(--body-size) * 1.05); }
   h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 
   .subtitle,
   .tagline {
     font-family: var(--font-subtitle);
-    font-weight: 400;
-    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    font-weight: 400; /* Regular 400 per request */
+    font-size: 21px; /* fixed 21px for subtitles */
     letter-spacing: 0.03em;
     line-height: 1.45;
     color: #222;
     opacity: 0.9;
+  }
+
+  /* Home page profile photo styling: centered, automatically scaled, elegant */
+  .home-photo {
+    display: block;
+    margin: 1.25rem auto;
+    width: min(40vw, 320px);
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    border: 3px solid rgba(255,255,255,0.6);
   }
 
   nav, button, input, select, textarea, .ui-text {
@@ -131,7 +145,7 @@ const title = config.title;
         <a
           href={getRelativeLocaleUrl(locale)}
           class={route == getRelativeLocaleUrl(locale) ? "text-size-sm sm:text-size-lg font-600" : "text-size-xs sm:text-size-sm font-600"}
-          style="font-family: var(--font-body); font-weight:500; letter-spacing:0.02em; font-size:clamp(0.9rem,2vw,1rem);"
+          style="font-family: var(--font-title); font-weight:400; letter-spacing:0.02em; font-size:32px;"
         >
           {title}
         </a>
