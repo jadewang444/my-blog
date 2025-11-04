@@ -33,6 +33,7 @@ import abbr from "./src/utils/remark/abbr";
 import wrapper from "./src/utils/remark/table-wrapper";
 import copy from "./src/utils/code-copy";
 import reading from "./src/utils/remark/reading";
+import fixTextDirectives from "./src/utils/remark/fix-text-directives";
 
 // https://astro.build/config
 export default defineConfig({
@@ -63,6 +64,7 @@ export default defineConfig({
       abbr,
       [table, { colspanWithEmpty: true }],
       wrapper,
+  fixTextDirectives,
       directive,
       ruby,
       [alerts, { legacyTitle: true }],
