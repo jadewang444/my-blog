@@ -19,8 +19,6 @@ const {
   article,
 } = Astro.props;
 const title = config.title;
-// show CTA only on literal root path '/'
-const showHomeCTA = route === '/';
 ---
 
 <!-- ✅ 引入字体 -->
@@ -320,14 +318,5 @@ const showHomeCTA = route === '/';
       <slot />
     </div>
 
-    {
-      showHomeCTA && (
-        <footer class="site-footer container">
-          <p class="cta">If you want to know more about me ...</p>
-          <p class="byline"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
-        </footer>
-      )
-    }
-
-  <Footer author={config.author} copyright={config.copyright} />
+    <Footer author={config.author} copyright={config.copyright} />
   </div>
