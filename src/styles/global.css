@@ -40,7 +40,8 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
 .cover{row-gap:0}
 .quote{max-width:var(--measure); margin:0 auto var(--cover-rhythm);}
 .quote-text{
-  margin:0 0 .4rem 0;
+  /* slightly more breathing room between the quote and the date */
+  margin:0 0 0.6rem 0;
   /* Word-style left alignment: ensure the paragraph starts at the left edge
      of the quote container with a ragged-right (not justified) layout. */
   display:block;
@@ -52,7 +53,7 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
   font-style: normal;
   font-variant-numeric: oldstyle-nums;
 }
-.quote-date{margin:0; text-align:right; color:var(--ink-2)}
+.quote-date{margin:0 0 0.8rem 0; text-align:right; color:var(--ink-2)}
 .site-footer.container{margin:0 auto var(--cover-cta-gap); text-align:center}
 .cta{margin:0 0 0 0}
 .byline{margin:0 0 0 0; letter-spacing:.02em}
