@@ -157,7 +157,7 @@
   role="button"
   aria-controls="mobile-nav"
   aria-expanded={menu}
-  on:click={() => (menu = !menu)}
+  onclick={() => (menu = !menu)}
   class="mobile-nav-toggle sm:hidden"
   aria-label="Open menu"
 >
