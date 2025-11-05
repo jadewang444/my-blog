@@ -1,50 +1,26 @@
 ---
 import Base from "$layouts/Base.astro";
-import { getCollection } from 'astro:content';
-import Time from '$utils/time';
-
-const allJottings = await getCollection('jotting');
-const posts = allJottings
-  .filter(p => !p.data.draft)
-  .sort((a,b) => b.data.timestamp.getTime() - a.data.timestamp.getTime())
-  .slice(0,3);
 ---
 
 <Base title={"Home | Jade's Space"} locale={"en"}>
   <main class="cover container page">
-    <div class="readable">
-      <figure class="hero reveal">
-        <img src="/me.png" alt="Hero — The Met" loading="lazy" decoding="async" />
-        <figcaption class="meta">The Met, Nov 2025</figcaption>
-      </figure>
+    <figure class="hero">
+      <!-- replaced responsive picture with a single high-quality image file -->
+      <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+      <figcaption class="hero-caption">At the Met, Oct 2025</figcaption>
+    </figure>
 
-      <div class="reveal" style="margin-top:1rem">
-        <h1 class="tagline">I write and record<br/>to taste life twice.</h1>
-        <div class="meta">New York • United States</div>
-      </div>
+    <section class="quote">
+      <p class="quote-text">I write and record to taste life twice.</p>
+      <p class="quote-date">Nov 1, 2025</p>
+    </section>
 
-      <section class="reveal" style="margin-top:1.5rem">
-        <h2 style="margin-bottom:.6rem">Recent writing</h2>
-        <div class="recent-grid">
-          {posts.map(post => (
-            <article class="card" aria-labelledby={post.id}>
-              <h3 id={post.id} style="font-size:1.15rem">{post.data.title}</h3>
-              <p>{post.data.description ?? post.body?.slice?.(0,120)}</p>
-              <div class="meta" style="margin-top:.6rem">{Time.date.locale(post.data.timestamp)}</div>
-            </article>
-          ))}
-        </div>
-      </section>
+    <!-- Move CTA into <main> so client-side Swup page swaps include it
+         and the CTA won't persist across navigations. -->
+    <div class="cta-block home-cta">
+      <p class="cta-sentence cta-matched">If you want to know more about me ...</p>
+      <p class="cta-link cta-matched-link"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
     </div>
-
-    <script>
-      // Reveal animation on load (respect prefers-reduced-motion via CSS)
-      if (typeof window !== 'undefined') {
-        window.addEventListener('load', () => {
-          document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'));
-        });
-      }
-    </script>
   </main>
 </Base>
 
@@ -64,4 +40,21 @@ const posts = allJottings
 
   /* Slightly smaller link under the sentence, visually balanced with the quote. */
   .cta-matched-link { font-size: calc(var(--cover-text-size) - 0.1rem); margin:0; }
+</style>
+
+<style>
+  /* Hero image caption (homepage only) */
+  .hero-caption {
+    margin-top: 12px; /* vertical spacing under the image */
+    text-align: center;
+    color: #777;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 640px) {
+    .hero-caption { font-size: 14px; }
+  }
 </style>
