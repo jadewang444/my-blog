@@ -1,7 +1,6 @@
 ---
 import { i18n } from "astro:config/client";
 import { getEntry } from "astro:content";
-import Time from "$utils/time";
 import Base from "$layouts/Base.astro";
 import i18nit from "$i18n";
 import { render } from "astro:content";
@@ -15,46 +14,121 @@ const { locale = i18n!.defaultLocale } = Astro.params;
 const t = i18nit(locale);
 
 const introduction = await getEntry("information", `${locale}/introduction`);
-const roll = await getEntry("information", `${locale}/roll`);
-const chronicle = (await getEntry("information", `${locale}/chronicle`))?.data;
 
 const { Content: Introduction } = introduction ? await render(introduction) : ({} as any);
-const { Content: Roll } = roll ? await render(roll) : ({} as any);
-
-const chronicles = Object.entries<string[]>(chronicle ?? {})
-	.map(([date, events]) => ({ date: new Date(date), events: events ?? [] }))
-	.sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
 <style lang="less">
+	:root {
+		/* Airy vertical rhythm for About page */
+		--about-rhythm: clamp(64px, 14vw, 180px);
+	}
+
+	main {
+		/* Full-height grid with generous vertical breathing */
+		padding-block: var(--about-rhythm);
+		padding-inline: clamp(20px, 6vw, 140px);
+		
+		/* Centered column with reading measure matching "At Twenty-Five" */
+		max-width: 780px;
+		margin-inline: auto;
+		
+		/* Ensure spacious vertical layout */
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--about-rhythm) * 0.5);
+	}
+
 	article {
-		div {
-			margin-bottom: 2rem;
+		/* Match typography from markdown.less (At Twenty-Five) */
+		font-weight: 300;
+		font-size: 18px;
+		line-height: 1.8;
+		letter-spacing: 0.02em;
+		color: var(--text-color, var(--primary-color));
+		
+		h2 {
+			/* Match h1 from markdown.less */
+			font-size: 1.5rem;
+			font-weight: 400;
+			text-align: left;
+			margin-bottom: 0.75rem;
+			border-bottom: none;
+			padding-bottom: 0;
+		}
 
-			h1 {
-				margin-bottom: 1rem;
+		:global(p) {
+			margin: 0 0 1.25rem 0;
+			font-weight: 300;
+			font-size: 18px;
+			text-align: justify;
+			text-justify: inter-word;
+			-webkit-hyphens: auto;
+			-ms-hyphens: auto;
+			hyphens: auto;
+			text-align-last: left;
+			letter-spacing: 0.02em;
+		}
 
-				/* Make introduction/roll headings only slightly larger than body text */
-				font-size: calc(var(--body-size) * 1.05);
-				font-weight: 600;
+		:global(hr) {
+			border-bottom: 1px dashed var(--remark-color);
+			margin: 1rem 0;
+		}
+
+		/* Hidden footnote for Huang Jinshu quote */
+		:global(.huang-quote) {
+			position: relative;
+			font-style: italic;
+			display: inline;
+			
+			&::after {
+				content: attr(data-footnote);
+				position: absolute;
+				bottom: 100%;
+				left: 0;
+				
+				background-color: var(--background-color);
+				border: 1px solid var(--shadow-color);
+				border-radius: 4px;
+				padding: 0.5rem 0.75rem;
+				
+				font-size: 0.85rem;
+				font-style: normal;
+				line-height: 1.4;
+				white-space: nowrap;
+				
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+				transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+				
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				z-index: 10;
 			}
+			
+			&:hover::after,
+			&:focus::after,
+			&:active::after {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+
+		/* Fallback: show footnote section if rendered by markdown processor */
+		:global(.footnotes) {
+			margin-top: 2rem;
+			border-top: 4px dotted var(--weak-color);
+			padding-top: 1rem;
+			color: var(--remark-color);
+			font-size: 0.8rem;
 		}
 	}
 </style>
 
 <Base title={t("navigation.about")} {locale}>
-	<main class="flex flex-col">
-		<article class="flex flex-col">
-			{
-				introduction && (
-					<div>
-						<h1>{t("about.introduction")}</h1>
-						<samp class="markdown">
-							<Introduction />
-						</samp>
-					</div>
-				)
-			}
+	<main>
+		<article>
+			{introduction && <Introduction />}
 		</article>
 	</main>
 </Base>
