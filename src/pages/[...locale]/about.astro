@@ -72,6 +72,10 @@ const t = i18nit(locale);
 				letter-spacing: 0.02em;
 				margin: 0;
 
+					/* Nudge the page title up by ~20px without altering other spacing */
+					transform: translateY(-20px);
+					will-change: transform;
+
 				/* Use the new top/start token and the title → verse gap token */
 				padding-top: var(--about-top-start);
 				margin-bottom: var(--about-title-gap);
@@ -97,7 +101,11 @@ const t = i18nit(locale);
 		}
 
 		/* Verse block: left-aligned within the centered column */
-		.verse { margin-top: 0; text-align: left; }
+		.verse { margin-top: 0; text-align: left; margin-left: auto; margin-right: auto; display: block; }
+		/* Move verse block upward on desktop by ~40px without changing typography/spacing */
+		@media (min-width: 768px) {
+			.verse { transform: translateY(-40px); will-change: transform; }
+		}
 		.verse-line { display: block; margin: 0; }
 		/* Line → line gap: 1.25× line-height */
 		.verse-line + .verse-line { margin-top: 1.25lh; }
@@ -141,7 +149,6 @@ const t = i18nit(locale);
 
 <Base title={t("navigation.about")} {locale}>
 	<main>
-		
 			<article aria-labelledby="why-i-write">
 				<h1 id="why-i-write">Why I write</h1>
 				<div class="verse" role="group" aria-label="Verse lines">

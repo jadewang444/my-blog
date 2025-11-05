@@ -44,7 +44,7 @@ import Base from "$layouts/Base.astro";
   /* Photo-specific caption and vertical offset for desktop only. */
   .about-photo-figure { overflow: visible; display:block; text-align:center; }
   .about-photo { display:block; margin:0 auto; will-change:transform; }
-  .about-photo-caption { font-family: 'Cormorant Garamond', var(--font-body), serif; font-weight:400; font-size:16px; color:#444; text-align:center; margin-top:0.5rem; }
+  .about-photo-caption { font-family: 'Cormorant Garamond', var(--font-body), serif; font-weight:400; font-size:16px; color:#444; text-align:center; margin-top:0.5rem; display:inline-block; will-change:transform; transform: translateY(-20px); }
 
   /* Move the image upward by ~40px on desktop to visually rebalance spacing. */
   @media (min-width: 768px) {
