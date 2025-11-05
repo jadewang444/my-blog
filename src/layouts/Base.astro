@@ -302,7 +302,48 @@ const title = config.title;
   import zoom from "medium-zoom/dist/pure";
   window.zoom = () => zoom(".markdown img", { background: "#00000044" });
   window.zoom();
-  document.addEventListener("astro:page-load", () => { window.zoom(); });
+
+  // Run zoom after Astro page hydration
+  document.addEventListener("astro:page-load", () => { window.zoom(); applyCaptionReset(); });
+
+  // Deterministic runtime inline reset for captions at tablet and smaller widths.
+  // This guarantees inline styles (higher specificity than compiled CSS) so
+  // headless/browser computed bounding boxes reflect the intended layout.
+  function applyCaptionReset() {
+    try {
+      const reset = () => {
+        if (typeof window === 'undefined') return;
+        const w = window.innerWidth || document.documentElement.clientWidth || 0;
+        // Only apply at tablet and below (<=768px) — keeps desktop styling intact.
+        if (w <= 768) {
+          const selectors = ['.about-photo-caption', '.home-photo-caption', 'figure figcaption'];
+          const caps = document.querySelectorAll(selectors.join(','));
+          caps.forEach((el) => {
+            // Clear transforms coming from page-scoped CSS and ensure breathing room.
+            el.style.transform = 'none';
+            el.style.marginTop = '0.9rem';
+            // Defensive: clear will-change to avoid animation artifacts
+            el.style.willChange = 'auto';
+          });
+        }
+      };
+
+      // Run once immediately and again after small delay to cover hydration timing.
+      reset();
+      setTimeout(reset, 250);
+
+      // Also listen for resizes to keep inline styles correct during viewport changes.
+      let t;
+      window.addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(reset, 120);
+      });
+    } catch (err) {
+      // Non-blocking: log for diagnostics but do not throw.
+      // eslint-disable-next-line no-console
+      console.warn('applyCaptionReset failed', err);
+    }
+  }
 </script>
 
 <App {title} {subtitle} {description} {article}
