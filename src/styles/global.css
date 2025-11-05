@@ -7,8 +7,8 @@
   --cover-rhythm: clamp(60px, 6.5vh, 72px);
   /* cover text sizing: main cover text and byline/date should match */
   --cover-cta-gap: calc(var(--cover-rhythm) * 0.6);
-  /* larger gap between CTA and copyright */
-  --cover-copyright-gap: calc(var(--cover-rhythm) * 1.4);
+  /* larger gap between CTA and copyright — increased for clearer separation */
+  --cover-copyright-gap: calc(var(--cover-rhythm) * 1.6);
   --cover-text-size: 1rem; /* 18px (same as root) — adjust if you prefer larger/smaller */
 }
 html{font-size:18px}
