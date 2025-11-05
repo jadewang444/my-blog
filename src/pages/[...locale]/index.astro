@@ -45,14 +45,8 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
 <Base title={t("navigation.home")} {locale}>
   <main class="flex flex-col gap-5 sm:gap-20 flex-grow">
     <header class="flex items-center justify-center flex-wrap-reverse grow-0.6">
-  {/* Personal photo: responsive WebP + PNG fallback; optimized variants live in /public */}
-  <picture>
-    <source type="image/webp" srcset="/me-960.webp 960w, /me-480.webp 480w" sizes="(max-width:640px) 88vw, 45vw" />
-    <source type="image/png" srcset="/me-960.png 960w, /me-480.opt.png 480w" sizes="(max-width:640px) 88vw, 45vw" />
-    <img src="/me-480.opt.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
-  </picture>
-      
-      {/* ❌ 站点 Logo 已移除 */}
+      <!-- simplified: single image file used site-wide -->
+      <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
     </header>
 
     <!-- generous spacer to keep the layout airy between the photo and the hero text -->
