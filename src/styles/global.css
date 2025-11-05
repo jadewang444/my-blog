@@ -6,6 +6,9 @@
   /* Option A+ refined — floor nudged +4px for subtle lift */
   --cover-rhythm: clamp(60px, 6.5vh, 72px);
   /* cover text sizing: main cover text and byline/date should match */
+  --cover-cta-gap: calc(var(--cover-rhythm) * 0.6);
+  /* larger gap between CTA and copyright */
+  --cover-copyright-gap: calc(var(--cover-rhythm) * 1.4);
   --cover-text-size: 1rem; /* 18px (same as root) — adjust if you prefer larger/smaller */
 }
 html{font-size:18px}
@@ -50,7 +53,7 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
   font-variant-numeric: oldstyle-nums;
 }
 .quote-date{margin:0; text-align:right; color:var(--ink-2)}
-.site-footer.container{margin:0 auto var(--cover-rhythm); text-align:center}
+.site-footer.container{margin:0 auto var(--cover-cta-gap); text-align:center}
 .cta{margin:0 0 0 0}
 .byline{margin:0 0 0 0; letter-spacing:.02em}
 
@@ -64,14 +67,15 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
 
 /* copyright one size smaller than the main cover text */
 .site-copyright{
-  display:block; margin-top:0; font-size: calc(var(--cover-text-size) - 0.125rem);
+  display:block;
+  margin-top: var(--cover-copyright-gap);
+  font-size: calc(var(--cover-text-size) - 0.125rem);
 }
 
 /* removed corner crop marks per design decision */
 
 /* ensure the composition rhythm between main blocks is even and airy
-   hero -> quote -> CTA -> site copyright */
-.site-copyright{display:block; margin-top:0}
+  hero -> quote -> CTA -> site copyright */
 
 
 /* Responsive: on small screens, keep elegance and stack date under quote left-aligned */
