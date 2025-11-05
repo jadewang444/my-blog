@@ -13,40 +13,59 @@ const t = i18nit(locale);
 ---
 
 <style lang="less">
-	:root {
-		/* Airy vertical rhythm for About page */
-		--about-rhythm: clamp(64px, 14vw, 180px);
-	}
-
+	/* Page-scoped rhythm token; avoid affecting global styles */
 	main {
-		/* Full-height grid with generous vertical breathing */
-		padding-block: var(--about-rhythm);
-		padding-inline: clamp(20px, 6vw, 140px);
-		/* Centered narrow column (verse measure) */
-		max-width: 48ch; /* 46–50ch */
+		--about-rhythm: clamp(64px, 14vw, 180px);
+
+		/* Centered column and responsive measure */
+		width: 90vw;                /* mobile base */
+		max-width: none;
+		padding-inline: 4vw;        /* mobile side breathing */
 		margin-inline: auto;
 
-		display: grid;
-		grid-template-rows: auto 1fr auto;
-		row-gap: calc(var(--about-rhythm) * 0.5);
+		/* Bottom breathing area (3× rhythm); top handled by title */
+		padding-bottom: calc(var(--about-rhythm) * 3);
+	}
+
+	/* Tablet and up: convert to character-based measure */
+	@media (min-width: 768px) {
+		main { width: auto; max-width: 48ch; padding-inline: 0; }
+	}
+	@media (min-width: 1024px) {
+		main { max-width: 52ch; }
+	}
+	@media (min-width: 1280px) {
+		main { max-width: 56ch; }
 	}
 
 	article {
-		/* Match typography from markdown.less (At Twenty-Five) */
+		/* Match "At Twenty-Five" text rhythm */
 		font-weight: 300;
 		font-size: 18px;
 		line-height: 1.8;
 		letter-spacing: 0.02em;
 		color: var(--text-color, var(--primary-color));
-        
+
+		/* Fine typographic features */
+		font-kerning: normal;
+		font-variant-numeric: oldstyle-nums; /* OSF */
+		font-variant-ligatures: common-ligatures discretionary-ligatures;
+		font-feature-settings: "onum" 1, "liga" 1, "dlig" 1, "kern" 1, "calt" 1;
+
 		h1 {
-			/* Match article title scale from At Twenty-Five */
+			/* Title scale and spacing parity with "At Twenty-Five" */
 			font-size: 1.5rem;
 			font-weight: 400;
 			text-align: center;
+			letter-spacing: 0.02em;
 			margin: 0;
+
+			/* Title top padding: 3× rhythm; gap to verse: 2× rhythm */
+			padding-top: calc(var(--about-rhythm) * 3);
+			margin-bottom: calc(var(--about-rhythm) * 2);
 		}
 
+		/* Keep paragraph defaults aligned with the essay system */
 		:global(p) {
 			margin: 0 0 1.25rem 0;
 			font-weight: 300;
@@ -65,11 +84,15 @@ const t = i18nit(locale);
 			margin: 1rem 0;
 		}
 
-		/* Verse lines and footnote */
-		.verse { margin-top: calc(var(--about-rhythm) * 0.5); }
+		/* Verse block: left-aligned within the centered column */
+		.verse { margin-top: 0; text-align: left; }
 		.verse-line { display: block; margin: 0; }
-		.verse-line + .verse-line { margin-top: 1.2lh; } /* ~1.2 line-heights gap */
+		/* Line → line gap: 1.25× line-height */
+		.verse-line + .verse-line { margin-top: 1.25lh; }
+		/* Optional stanza gap hook (empty line / stanza marker) */
+		.stanza-gap, .verse-line.stanza-gap { margin-top: 1.9lh; }
 
+		/* Hidden footnote */
 		.footnote-trigger { position: relative; cursor: help; outline: none; }
 		.footnote-trigger::after {
 			content: attr(data-footnote);
