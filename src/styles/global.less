@@ -384,3 +384,35 @@ figure figcaption {
 		margin-top: 0.9rem !important; /* ~14.4px breathing room */
 	}
 }
+
+/* Tablet override: ensure deterministic caption positioning at <= 768px
+	 (keeps desktop visuals intact; only affects tablet and below) */
+@media (max-width: 768px) {
+	.about-photo,
+	.home-photo,
+	.hero img {
+		transform: none !important;
+		position: static !important;
+		margin-top: 0 !important;
+		margin-bottom: 0.15rem !important;
+	}
+
+	.about-photo-caption,
+	.home-photo-caption,
+	figure .photo-caption {
+		transform: none !important;
+		margin-top: 0.9rem !important;
+		line-height: 1.3 !important;
+		position: static !important;
+		clear: both !important;
+	}
+
+	/* Defensive: decorative pseudo-elements should not interfere */
+	.about-photo-figure::before,
+	.about-photo-figure::after,
+	.hero::before,
+	.hero::after {
+		pointer-events: none !important;
+		z-index: 0 !important;
+	}
+}
