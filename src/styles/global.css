@@ -37,7 +37,10 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
 .cover{row-gap:0}
 .quote{max-width:var(--measure); margin:0 auto var(--cover-rhythm);}
 .quote-text{
-  margin:0 0 .4rem 0; text-align:left; font-style:italic; 
+  margin:0 0 .4rem 0;
+  text-align:left;
+  /* keep upright (not italic) per request */
+  font-style: normal;
   font-variant-numeric: oldstyle-nums;
 }
 .quote-date{margin:0; text-align:right; color:var(--ink-2)}
