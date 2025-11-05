@@ -299,3 +299,78 @@ figure figcaption {
  		font-size: 0.95rem;
  	}
 }
+
+/* Mobile-specific fixes (<= 480px): keep desktop visuals untouched */
+@media (max-width: 480px) {
+	/* Ensure the header/nav trigger is tappable above other content */
+	.mobile-nav-toggle {
+		position: relative;
+		z-index: 75; /* above most content, below any portal modals */
+		min-width: 44px;
+		min-height: 44px;
+		padding: 0.45rem; /* generous hit area */
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+	}
+
+	/* Mobile navigation container should sit above page content when open */
+	nav.fixed {
+		z-index: 70;
+	}
+
+	/* Overlay element: ensure it doesn't capture taps when closed (pointer-events toggled by Svelte classes)
+		 but defensively ensure decorative overlays don't block the header */
+	.fixed[aria-hidden="true"] { pointer-events: none; }
+
+	/* Hero / about figure: remove any upward shifts so it won't intrude on header */
+	.about-photo-figure,
+	.hero,
+	figure.hero,
+	figure.about-photo-figure {
+		position: relative;
+		z-index: 0; /* keep under the header */
+	}
+
+	/* If the image used transform to lift over header on desktop, neutralize it on small screens */
+	.about-photo,
+	.home-photo,
+	.hero img {
+		transform: none !important;
+		position: static !important;
+		margin-top: 0;
+		margin-bottom: 0.15rem;
+	}
+
+	/* Ensure decorative pseudo-elements don't capture taps */
+	.about-photo-figure::before,
+	.about-photo-figure::after,
+	.hero::before,
+	.hero::after {
+		pointer-events: none;
+	}
+
+	/* Caption: keep in normal flow, centered, and with 12–16px breathing room */
+	.about-photo-caption,
+	.home-photo-caption,
+	figure figcaption.photo-caption,
+	figure .photo-caption {
+		position: static !important;
+		display: block;
+		margin-top: 0.85rem; /* ~13.6px */
+		text-align: center;
+		line-height: 1.3;
+		clear: both;
+		z-index: 0;
+		pointer-events: auto; /* captions should remain selectable/clickable if needed */
+	}
+
+	/* If any upstream class applied negative margins to pull the image over the header, unset here */
+	.about-photo-figure,
+	.hero,
+	.about-photo {
+		margin-top: 0 !important;
+		transform: none !important;
+	}
+}

@@ -114,13 +114,16 @@
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
-  role="button"
+  role="presentation"
   onclick={() => (menu = false)}
-  class:pointer-events-none={!menu}
+  aria-hidden={!menu}
   class:bg-transparent={!menu}
-  class="fixed top-0 left-0 w-screen h-screen pointer-events-auto bg-#aaaaaa88 transition-background-color sm:hidden"></div>
+  class:pointer-events-none={!menu}
+  class:pointer-events-auto={menu}
+  class="fixed top-0 left-0 w-screen h-screen bg-#aaaaaa88 transition-background-color sm:hidden"></div>
 
 <nav
+  id="mobile-nav"
   bind:this={navigator}
   class:transform-translate-x-full={!menu}
   class="fixed top-0 right-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
@@ -149,7 +152,7 @@
   </footer>
 </nav>
 
-<button onclick={() => (menu = true)} class="sm:hidden">{@render bars()}</button>
+<button aria-controls="mobile-nav" aria-expanded={menu} onclick={() => (menu = true)} class="mobile-nav-toggle sm:hidden">{@render bars()}</button>
 
 <script lang="ts">
   import { onMount, type Snippet } from "svelte";
