@@ -374,3 +374,13 @@ figure figcaption {
 		transform: none !important;
 	}
 }
+
+/* Stronger override for small phones to ensure caption never overlaps the image.
+	 Keeps desktop visuals unchanged; applied only at <= 480px. */
+@media (max-width: 480px) {
+	.about-photo-caption,
+	.home-photo-caption {
+		transform: none !important;
+		margin-top: 0.9rem !important; /* ~14.4px breathing room */
+	}
+}
