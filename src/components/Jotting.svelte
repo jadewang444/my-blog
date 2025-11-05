@@ -102,7 +102,7 @@
 	</article>
 	<aside class="sm:flex-basis-200px flex flex-col gap-5">
 		<section>
-			<h3>{t("jotting.tag")}</h3>
+			<!-- Tag label removed as requested; keep the tag buttons below intact -->
 			<p>
 				{#each tag_list as tag (tag)}
 					<button class:selected={tags.includes(tag)} onclick={() => switch_tag(tag)}>{tag}</button>
