@@ -21,6 +21,9 @@ const {
   article,
 } = Astro.props;
 const title = config.title;
+// compute home URL for the current locale and whether to show the CTA
+const homeUrl = getRelativeLocaleUrl(locale);
+const showHomeCTA = route === homeUrl;
 ---
 
 <!-- ✅ 引入字体 -->
@@ -319,6 +322,15 @@ const title = config.title;
 
       <slot />
     </div>
+
+    {
+      showHomeCTA && (
+        <footer class="site-footer container">
+          <p class="cta">If you want to know more about me ...</p>
+          <p class="byline"><a href={getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`)}>At Twenty-Five</a></p>
+        </footer>
+      )
+    }
 
     <Footer {locale} author={config.author} copyright={config.copyright} />
   </div>
