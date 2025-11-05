@@ -240,3 +240,62 @@ svg {
 [data-theme="dark"]::view-transition-new(root) {
 	z-index: 1;
 }
+
+/* Responsive figure / caption rules
+   - Prevent overlap on small screens (<= 768px)
+   - Keep captions elegant, centered, using Cormorant Garamond in italic
+   - Add gentle vertical spacing without changing desktop styling
+*/
+figure {
+	display: block;
+	margin: 0 0 1.25rem 0;
+	max-width: 100%;
+	text-align: center;
+}
+
+figure img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+}
+
+figure figcaption {
+	display: block;
+}
+
+/* Visual style for captions: serif, slightly italic, soft grey */
+figure figcaption {
+	font-family: "Cormorant Garamond", var(--serif), serif;
+ 	font-style: italic;
+ 	color: #666;
+ 	font-size: 0.95rem;
+ 	line-height: 1.35;
+ 	text-align: center;
+ 	max-width: 92%;
+ 	margin-left: auto;
+ 	margin-right: auto;
+ 	padding: 0 0.25rem;
+ 	margin-top: 0.6rem;
+ 	clear: both; /* ensure it clears floats/positioned elements */
+}
+
+@media (max-width: 768px) {
+	/* On small screens ensure image is in normal flow and captions get extra breathing room */
+	figure {
+ 		margin-bottom: 1rem;
+ 	}
+
+	figure img {
+ 		width: 100%;
+ 		height: auto;
+ 		transform: none !important; /* neutralize desktop lifts */
+ 		position: static !important; /* make sure it occupies layout space */
+ 		margin-bottom: 0.2rem;
+ 	}
+
+	figure figcaption {
+ 		margin-top: 0.85rem;
+ 		font-size: 0.95rem;
+ 	}
+}
