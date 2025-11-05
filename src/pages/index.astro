@@ -3,10 +3,11 @@ import Base from "$layouts/Base.astro";
 ---
 
 <Base title={"Home | Jade's Space"} locale={"en"}>
-  <main class="cover container page home-cover">
+  <main class="cover container page">
     <figure class="hero">
       <!-- replaced responsive picture with a single high-quality image file -->
       <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+      <figcaption class="hero-caption">At the Met, Oct 2025</figcaption>
     </figure>
 
     <section class="quote">
@@ -16,35 +17,44 @@ import Base from "$layouts/Base.astro";
 
     <!-- Move CTA into <main> so client-side Swup page swaps include it
          and the CTA won't persist across navigations. -->
-    <div class="cta-block">
-      <p class="cta-sentence">If you want to know more about me ...</p>
-      <p class="cta-link"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
+    <div class="cta-block home-cta">
+      <p class="cta-sentence cta-matched">If you want to know more about me ...</p>
+      <p class="cta-link cta-matched-link"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
     </div>
   </main>
 </Base>
 
 <style>
-  /* Page-scoped overrides for the homepage only. Keep these specific so we don't
-     affect other pages that reuse shared classes. */
-  .home-cover .cta-block{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    margin-block-start: clamp(2rem, 5vw, 3.5rem);
-  }
+  /* Homepage-scoped adjustments so only the root index page is affected. */
+  .home-cta { display:flex; flex-direction:column; align-items:center; gap:0.6rem; }
 
-  /* Match the visual tone of the main quote: same font family/size/letter spacing */
-  .home-cover .cta-sentence{
-    margin: 0 0 0.6rem 0; /* ~0.6rem gap -> ~0.5–0.75rem requested */
-    font-family: var(--font-body);
-    font-size: var(--cover-text-size); /* same as .quote-text */
+  /* Match the CTA sentence to `.quote-text` typography (font family, size, letter-spacing).
+     Keep spacing tight: ~0.5–0.75rem gap between sentence and link. */
+  .cta-matched {
+    font-family: var(--font); /* same as .quote-text */
+    font-size: var(--cover-text-size);
     letter-spacing: 0.003em;
-    line-height: 1.65;
-    font-weight: 400;
+    margin: 0; /* spacing controlled by gap on .home-cta */
     text-align: center;
   }
 
-  .home-cover .cta-link{ margin:0; font-size: calc(var(--cover-text-size) - 0.125rem); }
+  /* Slightly smaller link under the sentence, visually balanced with the quote. */
+  .cta-matched-link { font-size: calc(var(--cover-text-size) - 0.1rem); margin:0; }
+</style>
+
+<style>
+  /* Hero image caption (homepage only) */
+  .hero-caption {
+    margin-top: 12px; /* vertical spacing under the image */
+    text-align: center;
+    color: #777;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 640px) {
+    .hero-caption { font-size: 14px; }
+  }
 </style>
