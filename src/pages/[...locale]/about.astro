@@ -137,10 +137,49 @@ const t = i18nit(locale);
 		.footnote-trigger:focus::after,
 		.footnote-trigger:active::after { opacity: 1; visibility: visible; }
 	}
+
+/* About page: local photo + caption styling (scoped to this page only) */
+.about-photo-figure {
+	margin: 0 auto 1.25rem; /* center the figure, add breathing below by default */
+	text-align: center;
+	display: block;
+}
+.about-photo {
+	display: inline-block;
+	width: 56%; /* comfortable desktop size */
+	max-width: 520px;
+	height: auto;
+	border-radius: 6px;
+	object-fit: cover;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+	border: 1px solid rgba(255,255,255,0.92);
+	transform: translateY(0); /* will be adjusted on desktop */
+	transition: transform 200ms ease;
+}
+.about-photo-caption {
+	display: block;
+	font-family: var(--font-body); /* inherit site body font (Cormorant) */
+	font-weight: 400; /* Regular 400 */
+	font-size: 16px; /* per request */
+	color: #444; /* slightly muted */
+	margin-top: 8px; /* breathing space above caption */
+	margin-bottom: 12px; /* breathing space below caption */
+	text-align: center; /* ensure perfectly centered */
+}
+
+/* Desktop: nudge the image upward by ~40px for better visual balance */
+@media (min-width: 1024px) {
+	.about-photo { transform: translateY(-40px); }
+	.about-photo-figure { margin-bottom: 0.6rem; }
+}
 </style>
 
 <Base title={t("navigation.about")} {locale}>
 	<main>
+			<figure class="about-photo-figure">
+				<img src="/me.png" alt="Shiyu Wang" class="about-photo" loading="lazy" decoding="async" />
+				<figcaption class="about-photo-caption">At the Met, Oct 2025</figcaption>
+			</figure>
 			<article aria-labelledby="why-i-write">
 				<h1 id="why-i-write">Why I write</h1>
 				<div class="verse" role="group" aria-label="Verse lines">
