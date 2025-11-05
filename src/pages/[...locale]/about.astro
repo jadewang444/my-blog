@@ -1,9 +1,7 @@
 ---
 import { i18n } from "astro:config/client";
-import { getEntry } from "astro:content";
 import Base from "$layouts/Base.astro";
 import i18nit from "$i18n";
-import { render } from "astro:content";
 
 export async function getStaticPaths() {
 	return i18n?.locales.map(locale => ({ params: { locale: locale == i18n?.defaultLocale ? undefined : (locale as string) } }));
@@ -12,10 +10,6 @@ export async function getStaticPaths() {
 const { locale = i18n!.defaultLocale } = Astro.params;
 
 const t = i18nit(locale);
-
-const introduction = await getEntry("information", `${locale}/introduction`);
-
-const { Content: Introduction } = introduction ? await render(introduction) : ({} as any);
 ---
 
 <style lang="less">
@@ -28,15 +22,13 @@ const { Content: Introduction } = introduction ? await render(introduction) : ({
 		/* Full-height grid with generous vertical breathing */
 		padding-block: var(--about-rhythm);
 		padding-inline: clamp(20px, 6vw, 140px);
-		
-		/* Centered column with reading measure matching "At Twenty-Five" */
-		max-width: 780px;
+		/* Centered narrow column (verse measure) */
+		max-width: 48ch; /* 46–50ch */
 		margin-inline: auto;
-		
-		/* Ensure spacious vertical layout */
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--about-rhythm) * 0.5);
+
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+		row-gap: calc(var(--about-rhythm) * 0.5);
 	}
 
 	article {
@@ -46,23 +38,21 @@ const { Content: Introduction } = introduction ? await render(introduction) : ({
 		line-height: 1.8;
 		letter-spacing: 0.02em;
 		color: var(--text-color, var(--primary-color));
-		
-		h2 {
-			/* Match h1 from markdown.less */
+        
+		h1 {
+			/* Match article title scale from At Twenty-Five */
 			font-size: 1.5rem;
 			font-weight: 400;
-			text-align: left;
-			margin-bottom: 0.75rem;
-			border-bottom: none;
-			padding-bottom: 0;
+			text-align: center;
+			margin: 0;
 		}
 
 		:global(p) {
 			margin: 0 0 1.25rem 0;
 			font-weight: 300;
 			font-size: 18px;
-			text-align: justify;
-			text-justify: inter-word;
+			text-align: left;
+			text-justify: auto;
 			-webkit-hyphens: auto;
 			-ms-hyphens: auto;
 			hyphens: auto;
@@ -75,60 +65,49 @@ const { Content: Introduction } = introduction ? await render(introduction) : ({
 			margin: 1rem 0;
 		}
 
-		/* Hidden footnote for Huang Jinshu quote */
-		:global(.huang-quote) {
-			position: relative;
-			font-style: italic;
-			display: inline;
-			
-			&::after {
-				content: attr(data-footnote);
-				position: absolute;
-				bottom: 100%;
-				left: 0;
-				
-				background-color: var(--background-color);
-				border: 1px solid var(--shadow-color);
-				border-radius: 4px;
-				padding: 0.5rem 0.75rem;
-				
-				font-size: 0.85rem;
-				font-style: normal;
-				line-height: 1.4;
-				white-space: nowrap;
-				
-				opacity: 0;
-				visibility: hidden;
-				pointer-events: none;
-				transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-				
-				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-				z-index: 10;
-			}
-			
-			&:hover::after,
-			&:focus::after,
-			&:active::after {
-				opacity: 1;
-				visibility: visible;
-			}
-		}
+		/* Verse lines and footnote */
+		.verse { margin-top: calc(var(--about-rhythm) * 0.5); }
+		.verse-line { display: block; margin: 0; }
+		.verse-line + .verse-line { margin-top: 1.2lh; } /* ~1.2 line-heights gap */
 
-		/* Fallback: show footnote section if rendered by markdown processor */
-		:global(.footnotes) {
-			margin-top: 2rem;
-			border-top: 4px dotted var(--weak-color);
-			padding-top: 1rem;
-			color: var(--remark-color);
-			font-size: 0.8rem;
+		.footnote-trigger { position: relative; cursor: help; outline: none; }
+		.footnote-trigger::after {
+			content: attr(data-footnote);
+			position: absolute;
+			left: 50%;
+			bottom: calc(100% + 8px);
+			transform: translateX(-50%);
+			white-space: nowrap;
+			background-color: var(--background-color);
+			border: 1px solid var(--shadow-color);
+			border-radius: 4px;
+			padding: 0.45rem 0.65rem;
+			font-size: 0.85rem;
+			line-height: 1.4;
+			color: var(--secondary-color);
+			box-shadow: 0 2px 10px rgba(0,0,0,.08);
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
+			z-index: 5;
 		}
+		.footnote-trigger:hover::after,
+		.footnote-trigger:focus::after,
+		.footnote-trigger:active::after { opacity: 1; visibility: visible; }
 	}
 </style>
 
 <Base title={t("navigation.about")} {locale}>
 	<main>
-		<article>
-			{introduction && <Introduction />}
-		</article>
+			<article aria-labelledby="why-i-write">
+				<h1 id="why-i-write">Why I write</h1>
+				<div class="verse" role="group" aria-label="Verse lines">
+					<span class="verse-line">You don’t yet understand the subtleties of time.</span>
+					<span class="verse-line">It doesn’t only slip away — it folds back,</span>
+					<span class="verse-line">like the tide rising to the shore.</span>
+					<span class="verse-line">I want to write time down.<span class="footnote-trigger" tabindex="0" role="note" aria-label="Footnote" data-footnote="— From Rain (《雨》) by 黃錦樹."></span></span>
+				</div>
+			</article>
 	</main>
 </Base>
