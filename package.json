@@ -40,6 +40,8 @@
 		"@astrojs/markdown-remark": "^6.3.8",
 		"@astrojs/sitemap": "^3.6.0",
 		"@astrojs/svelte": "^7.2.1",
+		"@fontsource/cormorant-garamond": "^5.2.11",
+		"@fontsource/spectral": "^5.2.8",
 		"@hbsnow/rehype-sectionize": "^1.0.7",
 		"@iconify-json/fa6-brands": "^1.2.6",
 		"@iconify-json/lucide": "^1.2.71",

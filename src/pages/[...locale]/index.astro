@@ -46,7 +46,9 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
   <main class="flex flex-col gap-5 sm:gap-20 flex-grow">
     <header class="flex items-center justify-center flex-wrap-reverse grow-0.6">
       <!-- simplified: single image file used site-wide -->
-      <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+      <div class="card-paper hero-fade overflow-hidden" style="margin:0 auto; max-width:660px;">
+        <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+      </div>
     </header>
 
     <!-- generous spacer to keep the layout airy between the photo and the hero text -->
@@ -54,7 +56,7 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
 
     {
       preface && (
-        <section class="flex flex-col">
+  <section class="flex flex-col text-text">
           {/* Lines 1–2: tagline (left) and date (right) as a compact unit with no blank line */}
           <div class="hero-lines">
             <!-- Line 1: Tagline (left-aligned) -->
@@ -63,7 +65,7 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
             </article>
 
             <!-- Line 2: Date (right-aligned, same unit) -->
-            <div class="preface-date">
+            <div class="preface-date subtext">
               Nov 1, 2025
             </div>
           </div>

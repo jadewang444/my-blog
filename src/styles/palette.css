@@ -1,0 +1,15 @@
+/* Palette tokens: warm paper, soft ink, and gentle accents */
+:root {
+  /* Paper & ink */
+  --bg: #FAFAF8;           /* warm paper white */
+  --text: #2A2A2A;         /* soft ink */
+  --subtext: #666666;      /* auxiliary text */
+
+  /* Accents (use sparingly) */
+  --accent: #C1A77A;       /* tea-gold light */
+  --accent-alt: #627B84;   /* blue-grey shadow */
+
+  /* Lines & depth */
+  --border: #EAE9E6;       /* hairline border */
+  --shadow-soft: 0 4px 18px rgba(0,0,0,0.04);
+}
