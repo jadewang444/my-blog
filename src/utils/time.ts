@@ -30,8 +30,11 @@ function Time(time?: Date | number, timezone: string = Time.default_timezone): s
 
 // Time namespace containing various date/time formatting and manipulation utilities
 namespace Time {
-	// Default timezone from environment configuration
-	export const default_timezone = import.meta.env.PUBLIC_TIMEZONE;
+	// Default timezone from environment configuration.
+	// If not configured, fall back to UTC to avoid build/server timezone shifts
+	// causing date-only frontmatter (e.g. "2025-11-01") to render as the
+	// previous day in some server timezones (e.g. UTC-4).
+	export const default_timezone = import.meta.env.PUBLIC_TIMEZONE ?? "UTC";
 	// User's local timezone detected from browser/system
 	export const user_timezone = DateTime.local().zoneName;
 

@@ -1,0 +1,7 @@
+:root{
+  --bg:#FAFAF8; --ink:#1F1F1F; --muted:#5B5B5B;
+  --accent:#C2A885; /* alt #6C7A80 */
+  --radius:16px; --shadow:0 6px 24px rgba(0,0,0,.04);
+  --shadow-hover:0 10px 30px rgba(0,0,0,.06);
+  --max-ch:66ch; --h1-lh:1.08; --body-lh:1.65;
+}

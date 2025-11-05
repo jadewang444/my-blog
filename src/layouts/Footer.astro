@@ -14,13 +14,7 @@ const year =
   (copyright && copyright.year) || new Date().getFullYear().toString();
 ---
 
-<footer
-  class="site-copyright w-full text-center flex items-center justify-center text-gray-500"
-  style={
-    isHome
-      ? "font-family: 'Spectral', var(--font-body), serif; font-weight:400; padding-top:1.5rem; margin-top:0; font-size:0.75rem;"
-      : "font-family: 'Spectral', var(--font-body), serif; font-weight:400; margin-top:var(--cover-copyright-gap); font-size:calc(var(--cover-text-size) - 0.125rem);"
-  }
->
-  © {year} {authorName}. All rights reserved.
+<footer class="w-full text-center" style={isHome ? "padding-top:1.2rem; margin-top:0;" : "margin-top:var(--cover-copyright-gap);"}>
+  <p class="meta" style="margin:0 0 .35rem 0; color: var(--muted);">A quiet space, updated occasionally.</p>
+  <p style="margin:0; color:var(--muted); font-family: 'Spectral', var(--font-body), serif; font-size:0.85rem;">© {year} {authorName}.</p>
 </footer>
