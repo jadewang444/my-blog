@@ -272,6 +272,30 @@ const title = config.title;
     display: inline-block;
     margin-top: 0.6rem;
   }
+
+  /* Refined site title styling: keep the same visual size but use
+     Cormorant Garamond 400, slightly increased letter-spacing for a
+     softer, more elegant presence, and move the title 1.5cm to the right.
+     Also apply font-smoothing/text-rendering tweaks for crisper Retina
+     rendering. We keep `font-size:32px` here so the visual size remains
+     identical to the existing inline style. */
+  .site-title {
+    font-family: var(--font-title);
+    font-weight: 400; /* regular */
+    letter-spacing: 0.04em; /* slightly wider for an airy, refined look */
+    margin-left: 1.5cm; /* user-requested horizontal offset */
+    font-size: 32px; /* preserve existing size */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    display: inline-block; /* keep layout consistent */
+  }
+
+  /* Reduce the left offset on narrow viewports so the header remains
+     balanced with the navigation icons on small screens. */
+  @media (max-width: 640px) {
+    .site-title { margin-left: 0.6cm; }
+  }
 </style>
 
 <script>
@@ -298,8 +322,7 @@ const title = config.title;
       <header class="sticky top-0 flex items-center justify-between pt-3 pb-1 mb-4 bg-background z-2 sm:(static pb-12)">
         <a
           href="/"
-          class={route == "/" ? "text-size-sm sm:text-size-lg font-600" : "text-size-xs sm:text-size-sm font-600"}
-          style="font-family: var(--font-title); font-weight:400; letter-spacing:0.02em; font-size:32px;"
+          class={`site-title ${route == "/" ? "text-size-sm sm:text-size-lg font-600" : "text-size-xs sm:text-size-sm font-600"}`}
         >
           {title}
         </a>
