@@ -4,7 +4,7 @@
  * Replace your entire Footer.astro content with this.
  */
 
-let { author, copyright } = Astro.props;
+let { author, copyright, isHome = false } = Astro.props;
 
 // fallback setup
 const authorName =
@@ -14,6 +14,13 @@ const year =
   (copyright && copyright.year) || new Date().getFullYear().toString();
 ---
 
-<footer class="site-copyright w-full text-center flex items-center justify-center text-size-sm text-gray-500" style="font-family: 'Spectral', var(--font-body), serif; font-weight:400; margin-top:0; margin-bottom:0;">
+<footer
+  class="site-copyright w-full text-center flex items-center justify-center text-gray-500"
+  style={
+    isHome
+      ? "font-family: 'Spectral', var(--font-body), serif; font-weight:400; padding-top:1.5rem; margin-top:0; font-size:0.75rem;"
+      : "font-family: 'Spectral', var(--font-body), serif; font-weight:400; margin-top:var(--cover-copyright-gap); font-size:calc(var(--cover-text-size) - 0.125rem);"
+  }
+>
   © {year} {authorName}. All rights reserved.
 </footer>

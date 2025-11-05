@@ -16,9 +16,27 @@ import Base from "$layouts/Base.astro";
 
     <!-- Move CTA into <main> so client-side Swup page swaps include it
          and the CTA won't persist across navigations. -->
-    <div class="cta-block">
-      <p class="cta-sentence">If you want to know more about me ...</p>
-      <p class="cta-link"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
+    <div class="cta-block home-cta">
+      <p class="cta-sentence cta-matched">If you want to know more about me ...</p>
+      <p class="cta-link cta-matched-link"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
     </div>
   </main>
 </Base>
+
+<style>
+  /* Homepage-scoped adjustments so only the root index page is affected. */
+  .home-cta { display:flex; flex-direction:column; align-items:center; gap:0.6rem; }
+
+  /* Match the CTA sentence to `.quote-text` typography (font family, size, letter-spacing).
+     Keep spacing tight: ~0.5–0.75rem gap between sentence and link. */
+  .cta-matched {
+    font-family: var(--font); /* same as .quote-text */
+    font-size: var(--cover-text-size);
+    letter-spacing: 0.003em;
+    margin: 0; /* spacing controlled by gap on .home-cta */
+    text-align: center;
+  }
+
+  /* Slightly smaller link under the sentence, visually balanced with the quote. */
+  .cta-matched-link { font-size: calc(var(--cover-text-size) - 0.1rem); margin:0; }
+</style>
