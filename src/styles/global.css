@@ -38,7 +38,13 @@ figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm)
 .quote{max-width:var(--measure); margin:0 auto var(--cover-rhythm);}
 .quote-text{
   margin:0 0 .4rem 0;
-  text-align:left;
+  /* Word-style left alignment: ensure the paragraph starts at the left edge
+     of the quote container with a ragged-right (not justified) layout. */
+  display:block;
+  width:100%;
+  margin-left:0;
+  margin-right:0;
+  text-align:left !important;
   /* keep upright (not italic) per request */
   font-style: normal;
   font-variant-numeric: oldstyle-nums;
