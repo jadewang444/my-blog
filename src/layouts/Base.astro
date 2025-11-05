@@ -21,9 +21,8 @@ const {
   article,
 } = Astro.props;
 const title = config.title;
-// compute home URL for the current locale and whether to show the CTA
-const homeUrl = getRelativeLocaleUrl(locale);
-const showHomeCTA = route === homeUrl;
+// show CTA only on literal root path '/'
+const showHomeCTA = route === '/';
 ---
 
 <!-- ✅ 引入字体 -->
