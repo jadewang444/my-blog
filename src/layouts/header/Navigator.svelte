@@ -128,58 +128,43 @@
   <header class="grid gap-5 c-secondary grid-rows-[repeat(3,1fr)] sm:(grid-rows-none grid-cols-[repeat(3,1fr)])">
     <button onclick={() => (menu = false)} class="sm:hidden">{@render close()}</button>
 
-    <a href={getRelativeLocaleUrl(locale)} class:location={route == getRelativeLocaleUrl(locale) || route.startsWith(getRelativeLocaleUrl(locale, "/preface"))}>
+    <a href="/" class:location={route === "/" || route.startsWith("/preface") }>
       <span>{@render home()}</span>
-      <p>{t("navigation.home")}</p>
+      <p>Home</p>
     </a>
 
-    <a href={getRelativeLocaleUrl(locale, "/jotting")} class:location={route.startsWith(getRelativeLocaleUrl(locale, "/jotting"))}>
+    <a href="/jotting" class:location={route.startsWith("/jotting") }>
       <span>{@render jotting()}</span>
-      <p>{t("navigation.jotting")}</p>
+      <p>Jotting</p>
     </a>
 
-    <a href={getRelativeLocaleUrl(locale, "/about")} class:location={route.startsWith(getRelativeLocaleUrl(locale, "/about"))}>
+    <a href="/about" class:location={route.startsWith("/about") }>
       <span>{@render about()}</span>
-      <p>{t("navigation.about")}</p>
+      <p>About</p>
     </a>
   </header>
 
   <footer class="flex flex-col gap-2 sm:gap-5 sm:(flex-row gap-7)">
-    <!-- 仅保留语言切换（英 / 中） -->
-    <Menu label="Language switcher">
-      {#snippet trigger()}
-        {#if globe}{@render globe()}{/if}
-      {/snippet}
-      <div data-no-swup class="contents">
-        <a href={getRelativeLocaleUrl("en", path)} aria-label="English">English</a>
-        <a href={getRelativeLocaleUrl("zh-cn", path)} aria-label="简体中文">简体中文</a>
-      </div>
-    </Menu>
+    <!-- language switcher removed -->
   </footer>
 </nav>
 
 <button onclick={() => (menu = true)} class="sm:hidden">{@render bars()}</button>
 
 <script lang="ts">
-  import { i18n } from "astro:config/client";
-  import { getRelativeLocaleUrl } from "astro:i18n";
   import { onMount, type Snippet } from "svelte";
   import i18nit from "$i18n";
-  import Menu from "./Menu.svelte";
 
   let {
-    locale,
     route,
     home,
     /* note 保留为可选，哪怕外层仍传入，也不再使用 */
     note,
     jotting,
     about,
-    globe,  // 可选
     bars,
     close
   }: {
-    locale: string;
     route: string;
     home: Snippet;
     note?: Snippet;
@@ -187,19 +172,15 @@
     about: Snippet;
     bars: Snippet;
     close: Snippet;
-    globe?: Snippet;
   } = $props();
 
-  const t = i18nit(locale);
+  const t = i18nit("en");
 
   // mobile 菜单
   let menu: boolean = $state(false);
   let navigator: HTMLElement | undefined = $state();
 
-  // 去掉 locale 前缀后的路径（用于语言切换）
-  let path: string | undefined = $derived(
-    route.slice(`/${locale == i18n?.defaultLocale ? "" : locale}`.length) || undefined
-  );
+  // language-switcher removed; path derivation not needed
 
   onMount(() => {
     for (const link of navigator!.getElementsByTagName("a")) {

@@ -1,6 +1,5 @@
 ---
-import { i18n } from "astro:config/client";
-import { getRelativeLocaleUrl } from "astro:i18n";
+// i18n support removed for zh-CN — keep layout language-independent (English)
 import { Icon } from "astro-icon/components";
 import config from "$config";
 import App from "$layouts/App.astro";
@@ -15,7 +14,6 @@ import "medium-zoom/dist/style.css";
 let route = Astro.url.pathname;
 
 const {
-  locale = i18n?.defaultLocale,
   title: subtitle,
   description = config.description,
   article,
@@ -301,15 +299,15 @@ const showHomeCTA = route === '/';
     <div id="body" class="flex flex-col min-h-screen">
       <header class="sticky top-0 flex items-center justify-between pt-3 pb-1 mb-4 bg-background z-2 sm:(static pb-12)">
         <a
-          href={getRelativeLocaleUrl(locale)}
-          class={route == getRelativeLocaleUrl(locale) ? "text-size-sm sm:text-size-lg font-600" : "text-size-xs sm:text-size-sm font-600"}
+          href="/"
+          class={route == "/" ? "text-size-sm sm:text-size-lg font-600" : "text-size-xs sm:text-size-sm font-600"}
           style="font-family: var(--font-title); font-weight:400; letter-spacing:0.02em; font-size:32px;"
         >
           {title}
         </a>
 
         <!-- ✅ 只保留 Home / Jotting / About（以及 globe、bars、close 插槽） -->
-        <Navigator {locale} {route} client:load>
+    <Navigator {route} client:load>
           <Icon name="lucide:tent" slot="home" is:inline />
           <Icon name="lucide:feather" slot="jotting" />
           <Icon name="lucide:at-sign" slot="about" />
@@ -326,10 +324,10 @@ const showHomeCTA = route === '/';
       showHomeCTA && (
         <footer class="site-footer container">
           <p class="cta">If you want to know more about me ...</p>
-          <p class="byline"><a href={getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`)}>At Twenty-Five</a></p>
+          <p class="byline"><a href="/jotting/at-twenty-five">At Twenty-Five</a></p>
         </footer>
       )
     }
 
-    <Footer {locale} author={config.author} copyright={config.copyright} />
+  <Footer author={config.author} copyright={config.copyright} />
   </div>
