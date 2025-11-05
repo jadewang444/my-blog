@@ -45,8 +45,11 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
 <Base title={t("navigation.home")} {locale}>
   <main class="flex flex-col gap-5 sm:gap-20 flex-grow">
     <header class="flex items-center justify-center flex-wrap-reverse grow-0.6">
-      <!-- simplified: single image file used site-wide -->
-      <img src="/me.png" alt="Shiyu Wang" class="home-photo" loading="lazy" decoding="async" />
+      <figure class="hero about-photo-figure header-figure">
+        <!-- simplified: single image file used site-wide -->
+        <img src="/me.png" alt="Shiyu Wang" class="home-photo about-photo" loading="lazy" decoding="async" />
+        <figcaption class="home-photo-caption about-photo-caption">At the Met, Oct 2025</figcaption>
+      </figure>
     </header>
 
     <!-- generous spacer to keep the layout airy between the photo and the hero text -->
@@ -76,3 +79,14 @@ const atTwentyFiveUrl = getRelativeLocaleUrl(locale, `/jotting/at-twenty-five`);
     <!-- Heatmap removed per request: remove rectangular grid at bottom of home -->
   </main>
 </Base>
+
+<style>
+  /* Photo caption + desktop offset for localized homepages */
+  .about-photo-figure { overflow: visible; display:block; text-align:center; }
+  .about-photo { display:block; margin:0 auto; will-change:transform; }
+  .about-photo-caption { font-family: 'Cormorant Garamond', var(--font-body), serif; font-weight:400; font-size:16px; color:#444; text-align:center; margin-top:0.5rem; }
+
+  @media (min-width: 768px) {
+    .about-photo { transform: translateY(-40px); }
+  }
+</style>

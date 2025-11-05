@@ -41,13 +41,13 @@ import Base from "$layouts/Base.astro";
   /* Slightly smaller link under the sentence, visually balanced with the quote. */
   .cta-matched-link { font-size: calc(var(--cover-text-size) - 0.1rem); margin:0; }
 
-  /* Home photo caption and offset (scoped to this page) */
-  .about-photo-figure { margin: 0 auto 1.25rem; text-align: center; display: block; }
-  .about-photo { display: inline-block; width: 56%; max-width: 520px; height: auto; border-radius: 6px; object-fit: cover; box-shadow: 0 6px 18px rgba(0,0,0,0.06); border: 1px solid rgba(255,255,255,0.92); transform: translateY(0); transition: transform 200ms ease; }
-  .about-photo-caption, .home-photo-caption { display: block; font-family: var(--font-body); font-weight: 400; font-size: 16px; color: #444; margin-top: 8px; margin-bottom: 12px; text-align: center; }
+  /* Photo-specific caption and vertical offset for desktop only. */
+  .about-photo-figure { overflow: visible; display:block; text-align:center; }
+  .about-photo { display:block; margin:0 auto; will-change:transform; }
+  .about-photo-caption { font-family: 'Cormorant Garamond', var(--font-body), serif; font-weight:400; font-size:16px; color:#444; text-align:center; margin-top:0.5rem; }
 
-  @media (min-width: 1024px) {
+  /* Move the image upward by ~40px on desktop to visually rebalance spacing. */
+  @media (min-width: 768px) {
     .about-photo { transform: translateY(-40px); }
-    .about-photo-figure { margin-bottom: 0.6rem; }
   }
 </style>
