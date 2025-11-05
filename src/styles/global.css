@@ -30,10 +30,38 @@ header.site-title{
   text-transform:uppercase; margin:0 0 2.25rem 0;
 }
 figure.hero{display:flex; justify-content:center; margin:0 0 var(--cover-rhythm) 0;}
+/* Reduced hero scale: explicit responsive sizes per viewport tiers
+   - Desktop (>=1280): target 660px
+   - Small laptop (1024): target 580px
+   - Tablet portrait (768): target 540px
+   - Mobile (<=480): ~90vw with safe padding
+   Keep aspect ratio, border-radius and shadow unchanged. */
 .hero img{
-  width:clamp(520px,60vw,760px); height:auto;
+  width:90vw; /* mobile-first: occupy ~90% of viewport width */
+  max-width:660px; /* never grow beyond desktop target */
+  height:auto;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+
+@media (min-width:481px) and (max-width:767px){
+  /* tablet portrait range — scale proportionally toward 540px */
+  .hero img{width:540px; max-width:80vw}
+}
+
+@media (min-width:768px) and (max-width:1023px){
+  /* larger tablets — target ~540px (proportional) */
+  .hero img{width:540px; max-width:75vw}
+}
+
+@media (min-width:1024px) and (max-width:1279px){
+  /* small laptop (1024) — target ~580px */
+  .hero img{width:580px}
+}
+
+@media (min-width:1280px){
+  /* desktop and up — fixed visual target */
+  .hero img{width:660px}
 }
 /* Shift image+quote slightly upward using negative margin on main grid item */
 .cover{align-content:start}
