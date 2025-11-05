@@ -32,14 +32,6 @@ const t = i18nit(locale);
 			<div class="flex flex-col gap-3 sm:flex-row children:(flex items-center gap-1 text-3.5 c-secondary)">
 				<time class="jotting-date" title={Time.full(jotting.data.timestamp)}><Icon name="lucide:calendar" />{Time.date.locale(jotting.data.timestamp)}</time>
 				{
-					jotting.data.tags?.length && (
-						<span>
-							<Icon name="lucide:hash" />
-							{jotting.data.tags?.join("; ")}
-						</span>
-					)
-				}
-				{
 					// hide word-count for the 'At Twenty-Five' article to keep header minimal
 					!(jotting.id && jotting.id.endsWith('at-twenty-five')) && (
 						<span><Icon name="lucide:pilcrow" />{t("read.words", { words: frontmatter.words })}</span>
