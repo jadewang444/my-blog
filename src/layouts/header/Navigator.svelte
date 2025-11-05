@@ -152,7 +152,17 @@
   </footer>
 </nav>
 
-<button aria-controls="mobile-nav" aria-expanded={menu} onclick={() => (menu = true)} class="mobile-nav-toggle sm:hidden">{@render bars()}</button>
+<!-- Mobile nav toggle: toggle menu state and expose role for clarity -->
+<button
+  role="button"
+  aria-controls="mobile-nav"
+  aria-expanded={menu}
+  on:click={() => (menu = !menu)}
+  class="mobile-nav-toggle sm:hidden"
+  aria-label="Open menu"
+>
+  {@render bars()}
+</button>
 
 <script lang="ts">
   import { onMount, type Snippet } from "svelte";

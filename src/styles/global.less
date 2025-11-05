@@ -415,4 +415,35 @@ figure figcaption {
 		pointer-events: none !important;
 		z-index: 0 !important;
 	}
+
+	/* Ensure header and mobile nav sit above hero/content and are tappable */
+	headers, header, .site-header {
+		position: relative !important;
+		z-index: 50 !important;
+	}
+
+	/* Broaden mobile nav toggle hit area and stacking context for <=768px */
+	.mobile-nav-toggle {
+		position: relative !important;
+		z-index: 75 !important;
+		min-width: 44px;
+		min-height: 44px;
+		padding: 0.35rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Ensure nav container floats above hero when open */
+	nav#mobile-nav, nav.fixed {
+		z-index: 70 !important;
+	}
+
+	/* Defensive: ensure decorative elements do not capture pointer above header */
+	.about-photo-figure,
+	.hero,
+	figure.about-photo-figure {
+		z-index: 0 !important;
+		pointer-events: none !important;
+	}
 }

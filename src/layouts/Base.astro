@@ -266,6 +266,45 @@ const title = config.title;
         letter-spacing: 0.02em;
       }
 
+      /* Ensure calendar icon + date text are geometrically centered
+         across all breakpoints. Keep desktop typography intact; these
+         rules are intentionally narrow and target only date-like elements. */
+      .jotting-date,
+      .preface-date,
+      .preface-date.text-center {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem; /* ~8px */
+        line-height: 1; /* ensure text doesn't add vertical offset */
+        vertical-align: middle;
+      }
+
+      /* Icon wrapper produced by Icon.astro — make SVG a block-level icon with fixed size
+         and remove any upstream vertical nudges applied via utility classes. */
+      .jotting-date figure,
+      .preface-date figure {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+      }
+
+      .jotting-date svg,
+      .preface-date svg {
+        display: block;
+        width: 16px !important;
+        height: 16px !important;
+        min-width: 16px;
+        min-height: 16px;
+        transform: translateY(-1px); /* subtle optical tweak; <=2px */
+      }
+
+      /* Defensive: neutralize small top-offset utility present on icon component */
+      .jotting-date figure .top-0.05em,
+      .preface-date figure .top-0.05em {
+        top: 0 !important;
+      }
+
   /* Home link style: underlined, inline and visually calm */
   .home-link {
     text-decoration: underline;
