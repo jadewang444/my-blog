@@ -13,19 +13,31 @@ const t = i18nit(locale);
 ---
 
 <style lang="less">
-	/* Page-scoped rhythm token; avoid affecting global styles */
-	main {
-		--about-rhythm: clamp(64px, 14vw, 180px);
+		/* Page-scoped rhythm and vertical tokens; avoid affecting global styles */
+		main {
+			/* retained rhythm token for other internal spacing if needed */
+			--about-rhythm: clamp(64px, 14vw, 180px);
 
-		/* Centered column and responsive measure */
-		width: 90vw;                /* mobile base */
-		max-width: none;
-		padding-inline: 4vw;        /* mobile side breathing */
-		margin-inline: auto;
+			/* New vertical composition tokens requested */
+			--about-top-start: clamp(12vh, 18vh, 22vh); /* page top → title */
+			--about-title-gap: calc(1.6 * 1.8 * 18px);  /* ~51.84px (1.6 × body line-height) */
+			--about-bottom-breath: clamp(6vh, 10vh, 12vh); /* last line → footer */
 
-		/* Bottom breathing area (3× rhythm); top handled by title */
-		padding-bottom: calc(var(--about-rhythm) * 3);
-	}
+			/* Centered column and responsive measure */
+			width: 90vw;                /* mobile base */
+			max-width: none;
+			padding-inline: 4vw;        /* mobile side breathing */
+			margin-inline: auto;
+
+			/* Remove layout constraints that push content down elsewhere */
+			min-height: auto !important;
+			display: block !important;
+			align-items: initial !important;
+
+			/* bottom breathing only (top handled by title token) */
+			padding-bottom: var(--about-bottom-breath);
+			padding-top: 0; /* ensure no large top padding remains */
+		}
 
 	/* Tablet and up: convert to character-based measure */
 	@media (min-width: 768px) {
@@ -52,18 +64,18 @@ const t = i18nit(locale);
 		font-variant-ligatures: common-ligatures discretionary-ligatures;
 		font-feature-settings: "onum" 1, "liga" 1, "dlig" 1, "kern" 1, "calt" 1;
 
-		h1 {
-			/* Title scale and spacing parity with "At Twenty-Five" */
-			font-size: 1.5rem;
-			font-weight: 400;
-			text-align: center;
-			letter-spacing: 0.02em;
-			margin: 0;
+			h1 {
+				/* Title scale and spacing parity with "At Twenty-Five" */
+				font-size: 1.5rem;
+				font-weight: 400;
+				text-align: center;
+				letter-spacing: 0.02em;
+				margin: 0;
 
-			/* Title top padding: 3× rhythm; gap to verse: 2× rhythm */
-			padding-top: calc(var(--about-rhythm) * 3);
-			margin-bottom: calc(var(--about-rhythm) * 2);
-		}
+				/* Use the new top/start token and the title → verse gap token */
+				padding-top: var(--about-top-start);
+				margin-bottom: var(--about-title-gap);
+			}
 
 		/* Keep paragraph defaults aligned with the essay system */
 		:global(p) {
@@ -91,6 +103,12 @@ const t = i18nit(locale);
 		.verse-line + .verse-line { margin-top: 1.25lh; }
 		/* Optional stanza gap hook (empty line / stanza marker) */
 		.stanza-gap, .verse-line.stanza-gap { margin-top: 1.9lh; }
+
+			/* Small-screen adjustments: slightly reduce top start so content isn't buried */
+			@media (max-width: 480px) {
+				main { --about-top-start: clamp(12vh, 15vh, 16vh); --about-bottom-breath: clamp(6vh, 8vh, 10vh); }
+				h1 { padding-top: var(--about-top-start); }
+			}
 
 		/* Hidden footnote */
 		.footnote-trigger { position: relative; cursor: help; outline: none; }
