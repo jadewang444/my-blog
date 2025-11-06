@@ -28,8 +28,8 @@ const t = i18nit(locale);
 	}
 </style>
 
-<figure class="fixed right-[calc(20px+max(calc((100%-1100px)/2),0px))] bottom-5 sm:bottom-30 flex flex-col gap-2">
-	<button aria-label="Scroll to Top" class="b-weak" onclick="document.scrollingElement?.scrollTo({top: 0, behavior: 'smooth'})">
+<figure id="scroll-top-figure" class="fixed right-[calc(20px+max(calc((100%-1100px)/2),0px))] bottom-5 sm:bottom-30 flex flex-col gap-2">
+	<button id="scroll-top-btn" aria-label="Scroll to Top" class="b-weak">
 		<Icon name="lucide:arrow-up-to-line" size={15} title={t("note.top")} />
 		<svg class="absolute top--2px left--2px w-[calc(100%+4px)] h-[calc(100%+4px)] transform-origin-center pointer-events-none">
 			<circle id="progress-circle" cx="50%" cy="50%" r="calc(50% - 1px)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
@@ -38,15 +38,75 @@ const t = i18nit(locale);
 </figure>
 
 <script>
-	function updateProgress() {
-		const content = document.querySelector("#markdown-content") as HTMLElement;
-		if (content) {
-			const progress = Math.min(1, Math.max(0, window.scrollY - content.offsetTop) / content.clientHeight);
-			const circle = document.getElementById("progress-circle");
-			if (circle) circle.style.strokeDashoffset = `${100 * (1 - progress)}`;
-		}
-	}
+	(function () {
+		const THRESHOLD = 200; // px scrolled before showing the button
+		const btn = document.getElementById('scroll-top-btn');
+		const figure = document.getElementById('scroll-top-figure');
 
-	window.addEventListener("scroll", updateProgress);
-	updateProgress();
+		function updateProgress() {
+			const content = document.querySelector('#markdown-content');
+			if (content) {
+				const progress = Math.min(1, Math.max(0, window.scrollY - (content as HTMLElement).offsetTop) / (content as HTMLElement).clientHeight);
+				const circle = document.getElementById('progress-circle');
+				if (circle) {
+					// cast via unknown to satisfy TypeScript's structural checks
+					(circle as unknown as SVGCircleElement).style.strokeDashoffset = `${100 * (1 - progress)}`;
+				}
+			}
+		}
+
+		function showOrHide() {
+			if (!figure || !btn) return;
+			if (window.scrollY > THRESHOLD) {
+				figure.style.opacity = '1';
+				figure.style.pointerEvents = 'auto';
+				figure.style.transform = 'translateY(0)';
+			} else {
+				// keep the same placement but hide interactability
+				figure.style.opacity = '0';
+				figure.style.pointerEvents = 'none';
+				figure.style.transform = 'translateY(8px)';
+			}
+		}
+
+		function scrollToTop(e?: Event) {
+			try {
+				if (e) {
+					e.preventDefault();
+				}
+				const root = document.scrollingElement || document.documentElement || document.body;
+				// Use smooth behavior where supported, fallback to instant
+				try {
+					root.scrollTo({ top: 0, behavior: 'smooth' });
+				} catch (err) {
+					root.scrollTop = 0;
+				}
+			} catch (err) {
+				// ignore
+			}
+		}
+
+		// Init
+		if (figure) {
+			// Start hidden
+			figure.style.transition = 'opacity 200ms ease, transform 200ms ease';
+			figure.style.opacity = '0';
+			figure.style.pointerEvents = 'none';
+			figure.style.transform = 'translateY(8px)';
+		}
+
+		if (btn) {
+			btn.addEventListener('click', scrollToTop, { passive: false });
+			btn.addEventListener('touchend', scrollToTop, { passive: false });
+		}
+
+		window.addEventListener('scroll', function () {
+			updateProgress();
+			showOrHide();
+		}, { passive: true });
+
+		// Run once
+		updateProgress();
+		showOrHide();
+	})();
 </script>
