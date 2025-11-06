@@ -1,4 +1,40 @@
 <style lang="less">
+  /* Mobile nav toggle button styling */
+  .mobile-nav-toggle {
+    position: relative;
+    z-index: 50;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  /* Ensure button is always interactive on mobile */
+  @media screen and (max-width: 640px) {
+    .mobile-nav-toggle {
+      display: block;
+      pointer-events: auto;
+    }
+  }
+
+  /* Mobile overlay backdrop */
+  @media screen and (max-width: 640px) {
+    [role="presentation"] {
+      z-index: 40;
+    }
+
+    #mobile-nav {
+      z-index: 45;
+      width: 75vw;
+      max-width: 300px;
+    }
+  }
+
   header {
     a {
       position: relative;
@@ -115,7 +151,8 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
   role="presentation"
-  on:click={() => (menu = false)}
+  onclick={() => (menu = false)}
+  ontouchstart={(e) => { e.preventDefault(); menu = false; }}
   aria-hidden={!menu}
   class:bg-transparent={!menu}
   class:pointer-events-none={!menu}
@@ -129,7 +166,7 @@
   class="fixed top-0 right-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
   <!-- 仅 3 个入口：Home / Jotting / About -->
   <header class="grid gap-5 c-secondary grid-rows-[repeat(3,1fr)] sm:(grid-rows-none grid-cols-[repeat(3,1fr)])">
-  <button on:click={() => (menu = false)} class="sm:hidden">{@render close()}</button>
+  <button onclick={() => (menu = false)} ontouchstart={(e) => { e.preventDefault(); menu = false; }} class="sm:hidden">{@render close()}</button>
 
     <a href="/" class:location={route === "/" || route.startsWith("/preface") }>
       <span>{@render home()}</span>
@@ -154,12 +191,13 @@
 
 <!-- Mobile nav toggle: toggle menu state and expose role for clarity -->
 <button
-  role="button"
+  bind:this={toggleButton}
   aria-controls="mobile-nav"
   aria-expanded={menu}
-  on:click={(e) => { const btn = (e.currentTarget || e.target); try { const cur = btn.getAttribute && btn.getAttribute('aria-expanded'); btn.setAttribute && btn.setAttribute('aria-expanded', (cur === 'true' ? 'false' : 'true')); } catch (err) {} menu = !menu }}
+  onclick={toggleMenu}
+  ontouchstart={handleTouchStart}
   class="mobile-nav-toggle sm:hidden"
-  aria-label="Open menu"
+  aria-label={menu ? "Close menu" : "Open menu"}
 >
   {@render bars()}
 </button>
@@ -192,10 +230,47 @@
   // mobile 菜单
   let menu: boolean = $state(false);
   let navigator: HTMLElement | undefined = $state();
+  let toggleButton: HTMLElement | undefined = $state();
+
+  // Toggle menu function with event prevention for mobile
+  function toggleMenu(e: Event) {
+    console.log('toggleMenu called, current menu state:', menu);
+    e.preventDefault();
+    e.stopPropagation();
+    menu = !menu;
+    console.log('toggleMenu after, new menu state:', menu);
+  }
+
+  // Handle touch events separately to avoid double-firing
+  function handleTouchStart(e: TouchEvent) {
+    console.log('handleTouchStart called, current menu state:', menu);
+    e.preventDefault();
+    menu = !menu;
+    console.log('handleTouchStart after, new menu state:', menu);
+  }
 
   // language-switcher removed; path derivation not needed
 
   onMount(() => {
+    console.log('Navigator component mounted');
+    
+    // Add native event listeners as fallback
+    if (toggleButton) {
+      console.log('Adding native listeners to toggle button');
+      toggleButton.addEventListener('click', (e) => {
+        console.log('Native click event fired');
+        e.preventDefault();
+        e.stopPropagation();
+        menu = !menu;
+      });
+      
+      toggleButton.addEventListener('touchstart', (e) => {
+        console.log('Native touchstart event fired');
+        e.preventDefault();
+        menu = !menu;
+      }, { passive: false });
+    }
+    
     for (const link of navigator!.getElementsByTagName("a")) {
       link.addEventListener("click", () => (menu = false));
     }
