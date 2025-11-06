@@ -157,7 +157,7 @@
   role="button"
   aria-controls="mobile-nav"
   aria-expanded={menu}
-  on:click={() => (menu = !menu)}
+  on:click={(e) => { const btn = (e.currentTarget || e.target); try { const cur = btn.getAttribute && btn.getAttribute('aria-expanded'); btn.setAttribute && btn.setAttribute('aria-expanded', (cur === 'true' ? 'false' : 'true')); } catch (err) {} menu = !menu }}
   class="mobile-nav-toggle sm:hidden"
   aria-label="Open menu"
 >
