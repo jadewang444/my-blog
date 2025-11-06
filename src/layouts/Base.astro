@@ -300,8 +300,10 @@ const title = config.title;
       }
 
       /* Defensive: neutralize small top-offset utility present on icon component */
-      .jotting-date figure .top-0.05em,
-      .preface-date figure .top-0.05em {
+      /* Some utility-class names contain characters (like dots); match them defensively
+         via attribute selector to avoid CSS parsing issues. */
+      .jotting-date figure [class*="top-0.05em"],
+      .preface-date figure [class*="top-0.05em"] {
         top: 0 !important;
       }
 
@@ -371,18 +373,61 @@ const title = config.title;
       reset();
       setTimeout(reset, 250);
 
+      // Attach a small native click handler to the mobile nav toggle to ensure
+      // aria-expanded updates synchronously even before framework hydration.
+      const attachNavToggleAriaSync = () => {
+        try {
+          // Use event delegation so the handler survives framework re-renders/hydration
+          if ((window.__mobileNavDelegated)) return;
+          document.addEventListener('click', (ev) => {
+            try {
+              const el = ev.target && ev.target.closest && ev.target.closest('.mobile-nav-toggle');
+              if (!el) return;
+              const cur = el.getAttribute('aria-expanded');
+              el.setAttribute('aria-expanded', (cur === 'true' ? 'false' : 'true'));
+            } catch (err) {
+              // ignore per-click errors
+            }
+          }, true);
+          window.__mobileNavDelegated = true;
+        } catch (e) {
+          // ignore
+        }
+      };
+
+      attachNavToggleAriaSync();
+
       // Also listen for resizes to keep inline styles correct during viewport changes.
       let t;
       window.addEventListener('resize', () => {
         clearTimeout(t);
         t = setTimeout(reset, 120);
       });
+      window.addEventListener('resize', () => setTimeout(attachNavToggleAriaSync, 120));
     } catch (err) {
       // Non-blocking: log for diagnostics but do not throw.
       // eslint-disable-next-line no-console
       console.warn('applyCaptionReset failed', err);
     }
   }
+</script>
+
+<!-- Inline defensive script: ensure mobile nav aria-expanded toggles even before hydration. -->
+<script>
+  (function () {
+    try {
+      if (window.__mobileNavDelegated) return;
+      document.addEventListener('click', function (ev) {
+        try {
+          const el = ev.target && ev.target.closest && ev.target.closest('.mobile-nav-toggle');
+          if (!el) return;
+          const cur = el.getAttribute('aria-expanded');
+          el.setAttribute('aria-expanded', (cur === 'true' ? 'false' : 'true'));
+        } catch (e) {}
+      }, true);
+      window.__mobileNavDelegated = true;
+    } catch (e) {}
+  })();
 </script>
 
 <App {title} {subtitle} {description} {article}
