@@ -145,6 +145,17 @@ const t = i18nit(locale);
 		.footnote-trigger:focus::after,
 		.footnote-trigger:active::after { opacity: 1; visibility: visible; }
 	}
+
+/* Closing note under the final paragraph, centered and minimal */
+.about-closing-note {
+	font-family: "Cormorant Garamond", var(--serif), serif;
+	font-weight: 300;
+	font-size: 0.9em;
+	color: rgba(0,0,0,0.7);
+	text-align: center;
+	margin-top: 2.5rem;
+	line-height: 1.5;
+}
 </style>
 
 <Base title={t("navigation.about")} {locale}>
@@ -157,6 +168,9 @@ const t = i18nit(locale);
 					<span class="verse-line">like the tide rising to the shore.</span>
 					<span class="verse-line">I want to write time down.<span class="footnote-trigger" tabindex="0" role="note" aria-label="Footnote" data-footnote="— From Rain (《雨》) by 黃錦樹."></span></span>
 				</div>
+
+				<!-- Small closing line requested by the owner -->
+				<p class="about-closing-note">Just a small corner for my passing thoughts — updated from time to time : )</p>
 			</article>
 	</main>
 </Base>
