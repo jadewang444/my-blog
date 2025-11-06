@@ -29,6 +29,12 @@ const title = config.title;
   rel="stylesheet"
 />
 
+<!-- Defensive classic script: attach delegated click handler early so
+     `.mobile-nav-toggle` aria-expanded toggles synchronously before
+     framework hydration. Placed as a classic script (not module) so
+     it executes predictably in headless environments. -->
+<script src="/inline-nav-aria-toggle.js"></script>
+
 <style>
   :root {
     /* Use Cormorant Garamond as the primary type across the site (user request).
