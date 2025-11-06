@@ -115,7 +115,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
   role="presentation"
-  onclick={() => (menu = false)}
+  on:click={() => (menu = false)}
   aria-hidden={!menu}
   class:bg-transparent={!menu}
   class:pointer-events-none={!menu}
@@ -129,7 +129,7 @@
   class="fixed top-0 right-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
   <!-- 仅 3 个入口：Home / Jotting / About -->
   <header class="grid gap-5 c-secondary grid-rows-[repeat(3,1fr)] sm:(grid-rows-none grid-cols-[repeat(3,1fr)])">
-    <button onclick={() => (menu = false)} class="sm:hidden">{@render close()}</button>
+  <button on:click={() => (menu = false)} class="sm:hidden">{@render close()}</button>
 
     <a href="/" class:location={route === "/" || route.startsWith("/preface") }>
       <span>{@render home()}</span>
@@ -157,7 +157,7 @@
   role="button"
   aria-controls="mobile-nav"
   aria-expanded={menu}
-  onclick={() => (menu = !menu)}
+  on:click={() => (menu = !menu)}
   class="mobile-nav-toggle sm:hidden"
   aria-label="Open menu"
 >
