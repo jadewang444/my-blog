@@ -1,7 +1,9 @@
 [
   {
+    "page": "/",
+    "url": "http://localhost:4321/",
     "width": 390,
-    "shot": "./tmp/verify-390.png",
+    "shot": "./tmp/verify-home-390.png",
     "alignment": {
       "delta": 0,
       "pass": true,
@@ -17,15 +19,17 @@
     "nav": {
       "exists": true,
       "before": "false",
-      "after": "false",
+      "after": "true",
       "troubles": [],
       "final": "false",
-      "pass": false
+      "pass": true
     }
   },
   {
+    "page": "/",
+    "url": "http://localhost:4321/",
     "width": 768,
-    "shot": "./tmp/verify-768.png",
+    "shot": "./tmp/verify-home-768.png",
     "alignment": {
       "delta": 0,
       "pass": true,
@@ -41,15 +45,17 @@
     "nav": {
       "exists": true,
       "before": "false",
-      "after": "false",
+      "after": "true",
       "troubles": [],
       "final": "false",
-      "pass": false
+      "pass": true
     }
   },
   {
+    "page": "/",
+    "url": "http://localhost:4321/",
     "width": 1280,
-    "shot": "./tmp/verify-1280.png",
+    "shot": "./tmp/verify-home-1280.png",
     "alignment": {
       "delta": 0,
       "pass": true,
@@ -61,6 +67,124 @@
       "headerZ": "2",
       "heroZ": "auto",
       "pass": null
+    },
+    "nav": {
+      "exists": true,
+      "before": "false",
+      "after": null,
+      "troubles": [
+        "TimeoutError: elementHandle.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    6 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n"
+      ],
+      "pass": false
+    }
+  },
+  {
+    "page": "/jotting/at-twenty-five",
+    "url": "http://localhost:4321/jotting/at-twenty-five",
+    "width": 390,
+    "shot": "./tmp/verify-jottingat-twenty-five-390.png",
+    "alignment": {
+      "delta": 0,
+      "pass": true,
+      "info": {
+        "svgBox": {
+          "x": 13.5,
+          "y": 148.890625,
+          "width": 15.75,
+          "height": 15.75
+        },
+        "textBox": {
+          "x": 13.5,
+          "y": 148.890625,
+          "width": 363,
+          "height": 15.75
+        },
+        "svgCenter": 156.765625,
+        "textCenter": 156.765625
+      }
+    },
+    "stacking": {
+      "headerZ": "50",
+      "heroZ": "missing",
+      "pass": false
+    },
+    "nav": {
+      "exists": true,
+      "before": "false",
+      "after": "true",
+      "troubles": [],
+      "final": "false",
+      "pass": true
+    }
+  },
+  {
+    "page": "/jotting/at-twenty-five",
+    "url": "http://localhost:4321/jotting/at-twenty-five",
+    "width": 768,
+    "shot": "./tmp/verify-jottingat-twenty-five-768.png",
+    "alignment": {
+      "delta": 0,
+      "pass": true,
+      "info": {
+        "svgBox": {
+          "x": 13.5,
+          "y": 198.390625,
+          "width": 15.75,
+          "height": 15.75
+        },
+        "textBox": {
+          "x": 13.5,
+          "y": 198.390625,
+          "width": 95.625,
+          "height": 15.75
+        },
+        "svgCenter": 206.265625,
+        "textCenter": 206.265625
+      }
+    },
+    "stacking": {
+      "headerZ": "50",
+      "heroZ": "missing",
+      "pass": false
+    },
+    "nav": {
+      "exists": true,
+      "before": "false",
+      "after": "true",
+      "troubles": [],
+      "final": "false",
+      "pass": true
+    }
+  },
+  {
+    "page": "/jotting/at-twenty-five",
+    "url": "http://localhost:4321/jotting/at-twenty-five",
+    "width": 1280,
+    "shot": "./tmp/verify-jottingat-twenty-five-1280.png",
+    "alignment": {
+      "delta": 0,
+      "pass": true,
+      "info": {
+        "svgBox": {
+          "x": 153.5,
+          "y": 198.390625,
+          "width": 15.75,
+          "height": 15.75
+        },
+        "textBox": {
+          "x": 153.5,
+          "y": 198.390625,
+          "width": 95.625,
+          "height": 15.75
+        },
+        "svgCenter": 206.265625,
+        "textCenter": 206.265625
+      }
+    },
+    "stacking": {
+      "headerZ": "2",
+      "heroZ": "missing",
+      "pass": false
     },
     "nav": {
       "exists": true,

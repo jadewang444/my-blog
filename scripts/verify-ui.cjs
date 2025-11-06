@@ -2,20 +2,25 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 
 (async () => {
-  const url = process.argv[2] || 'https://www.jadewang.space/';
+  const base = process.argv[2] || 'https://www.jadewang.space';
+  // pages to verify: homepage + example jotting that contains a calendar SVG
+  const pages = [ '/', '/jotting/at-twenty-five' ];
   const widths = [390, 768, 1280];
   const results = [];
   const browser = await chromium.launch({ args: ['--no-sandbox'] });
   const page = await browser.newPage();
 
-  for (const w of widths) {
-    const h = w <= 768 ? 900 : 900;
-    await page.setViewportSize({ width: w, height: h });
-    await page.goto(url, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(4000); // allow hydration
+  for (const pth of pages) {
+    const url = base.replace(/\/$/, '') + pth;
+    console.log('Verifying', url);
+    for (const w of widths) {
+      const h = w <= 768 ? 900 : 900;
+      await page.setViewportSize({ width: w, height: h });
+      await page.goto(url, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(4000); // allow hydration
 
     // Take screenshot
-    const shotPath = `./tmp/verify-${w}.png`;
+  const shotPath = `./tmp/verify-${pth.replace(/\//g,'').replace(/^$/, 'home')}-${w}.png`;
     await page.screenshot({ path: shotPath, fullPage: false });
 
   // ALIGNMENT: find calendar icon + date text
@@ -91,15 +96,18 @@ const fs = require('fs');
     const passStack = (headerZ === 'auto' || heroZ === 'auto') ? null : (Number(headerZ) > Number(heroZ));
     const passNav = !!(navClickResult.before !== null && navClickResult.after === 'true' && navClickResult.final === 'false');
 
-    results.push({
-      width: w,
-      shot: shotPath,
-      alignment: { delta: alignDelta, pass: passAlign, info: alignInfo },
-      stacking: { headerZ, heroZ, pass: passStack },
-      nav: { ...navClickResult, pass: passNav }
-    });
+      results.push({
+        page: pth,
+        url,
+        width: w,
+        shot: shotPath,
+        alignment: { delta: alignDelta, pass: passAlign, info: alignInfo },
+        stacking: { headerZ, heroZ, pass: passStack },
+        nav: { ...navClickResult, pass: passNav }
+      });
 
-    console.log(`W=${w}: align=${alignDelta}px (${passAlign? 'PASS':'FAIL'}) headerZ=${headerZ} heroZ=${heroZ} navPass=${passNav}`);
+      console.log(`${pth} W=${w}: align=${alignDelta}px (${passAlign? 'PASS':'FAIL'}) headerZ=${headerZ} heroZ=${heroZ} navPass=${passNav}`);
+  }
   }
 
   await browser.close();

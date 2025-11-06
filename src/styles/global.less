@@ -29,6 +29,36 @@
 	}
 }
 
+	/* Jotting date: make calendar icon and text vertically centered.
+		 The Icon component renders an inline-flex figure with a small relative top offset
+		 — normalize here so the SVG baseline aligns precisely with the date text.
+	 */
+	.jotting-date {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		vertical-align: middle;
+		line-height: 1; /* keep the inline block tight so centering is consistent */
+	}
+
+	.jotting-date svg {
+		display: inline-block;
+		vertical-align: middle;
+		height: 1em; /* match font-size so the icon sits on the text baseline */
+		width: auto;
+		position: relative;
+		top: 0 !important; /* override the top:0.05em applied in the Icon component */
+	}
+
+	/* Defensive: if the Icon renders a wrapping figure, keep it inline and centered */
+	.jotting-date > figure {
+		display: inline-flex;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+	}
+
+
 :root {
 	.light-theme();
 	--serif: "Cormorant Garamond", "Noto Serif SC", serif;
