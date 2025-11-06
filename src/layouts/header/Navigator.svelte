@@ -157,7 +157,6 @@
   role="button"
   aria-controls="mobile-nav"
   aria-expanded={menu}
-  onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true' ? 'false' : 'true');"
   onclick={() => (menu = !menu)}
   class="mobile-nav-toggle sm:hidden"
   aria-label="Open menu"
