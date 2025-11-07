@@ -6,7 +6,7 @@ import svelte from "@astrojs/svelte";
 import UnoCSS from "unocss/astro";
 import swup from "@swup/astro";
 import icon from "astro-icon";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import github_light from "shiki/themes/github-light.mjs"
 
 import GFM from "remark-gfm";
