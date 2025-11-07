@@ -3,7 +3,6 @@ import { i18n } from "astro:config/client";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import i18nit from "$i18n";
 
-export const prerender = true;
 
 export async function getStaticPaths() {
   return i18n!.locales.map(locale => ({ params: { locale: locale == i18n?.defaultLocale ? undefined : (locale as string) } }));

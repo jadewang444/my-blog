@@ -6,7 +6,6 @@ import svelte from "@astrojs/svelte";
 import UnoCSS from "unocss/astro";
 import swup from "@swup/astro";
 import icon from "astro-icon";
-import vercel from "@astrojs/vercel";
 import github_light from "shiki/themes/github-light.mjs"
 
 import GFM from "remark-gfm";
@@ -38,10 +37,6 @@ import fixTextDirectives from "./src/utils/remark/fix-text-directives";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "server",
-  adapter: vercel({
-    webAnalytics: { enabled: false }
-  }),
   site: "https://thought-lite.vercel.app",
   trailingSlash: "never",
   i18n: {

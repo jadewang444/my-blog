@@ -7,7 +7,6 @@ import { Feed } from "feed";
 import config from "$config";
 import i18nit from "$i18n";
 
-export const prerender = true;
 
 export async function getStaticPaths() {
 	return i18n!.locales.map(locale => ({ params: { locale: locale == i18n?.defaultLocale ? undefined : (locale as string) } }));
