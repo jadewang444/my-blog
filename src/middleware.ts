@@ -3,6 +3,31 @@
 // This CSP allows self-hosted resources, Google Fonts, and inline styles
 // (the 'unsafe-inline' for styles is included because the site uses small
 // inline style attributes in a few places). Adjust as needed.
+// Password protection for the entire site
+const SITE_PASSWORD = import.meta.env.SITE_PASSWORD || "";
+const PASSWORD_COOKIE_NAME = "site_auth";
+const PASSWORD_COOKIE_MAX_AGE = 30 * 24 * 60 * 60; // 30 days in seconds
+
+export const onRequest = async (ctx: any, next: any) => {
+  // Skip password check for password submission endpoint
+  if (ctx.request.url.includes("/__auth")) {
+    return next();
+  }
+
+  // If password is set, check authentication
+  if (SITE_PASSWORD) {
+    const cookieHeader = ctx.request.headers.get("cookie") || "";
+    const cookies = cookieHeader.split(";").reduce(
+      (acc: Record<string, string>, cookie: string) => {
+        const [key, value] = cookie.trim().split("=");
+        acc[key] = decodeURIComponent(value || "");
+        return acc;
+      },
+      {}
+    );
+
+    const isAuthenticated = cookies[PASSWORD_COOKIE_NAME] === SITE_PASSWORD;
+
     if (!isAuthenticated) {
       // Return an upgraded password form that matches the provided design
       const html = `
@@ -107,33 +132,6 @@
 `;
       return new Response(html, { status: 401, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
     }
-        
-        if (remaining <= 0) {
-          setLockout();
-          updateLockoutUI();
-          errorEl.classList.remove("show");
-        } else {
-          errorEl.textContent = \`Incorrect password. \${remaining} attempt\${remaining > 1 ? 's' : ''} remaining.\`;
-          errorEl.classList.add("show");
-        }
-        
-        document.getElementById("password").value = "";
-        document.getElementById("password").focus();
-      }
-    });
-
-    // Check lockout status on page load
-    checkRateLimit();
-  </script>
-</body>
-</html>
-`;
-      return new Response(html, {
-        status: 401,
-        headers: { "Content-Type": "text/html; charset=utf-8" },
-      });
-    }
-  }
 
   const response = await next();
 
