@@ -49,14 +49,14 @@ export const onRequest = async (ctx: any, next: any) => {
         .blob-green{ width:50vw; height:50vw; background:#e2f5ee; bottom:-10%; right:5%; animation-delay:-7s }
         .blob-blue{ width:55vw; height:55vw; background:#e0efff; top:30%; left:35%; animation-delay:-12s }
         @keyframes drift{ 0%{transform:translate(0,0) scale(1) rotate(0deg)} 100%{transform:translate(10%,10%) scale(1.1) rotate(15deg)} }
-        .glass-card{ background: rgba(255,255,255,0.4); backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px); border:0.5px solid rgba(255,255,255,0.5); border-radius:50px; padding:4rem 3rem; width:90%; max-width:460px; box-shadow:0 40px 100px rgba(0,0,0,0.03); text-align:center; transition: all 0.8s cubic-bezier(0.16,1,0.3,1) }
-        .title{ font-family:'Bodoni Moda', serif; font-size:3.2rem; color:#2d2d2d; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem; line-height:1 }
-        .subtitle{ font-family:'Montserrat', sans-serif; color:#9a9a9a; font-weight:200; margin-bottom:3.5rem; font-size:0.75rem; letter-spacing:0.4em; text-transform:uppercase }
+        .glass-card{ background: rgba(255,255,255,0.4); backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px); border:0.5px solid rgba(255,255,255,0.5); border-radius:50px; padding:3.2rem 2.25rem; width:90%; max-width:460px; box-shadow:0 40px 100px rgba(0,0,0,0.03); text-align:center; transition: all 0.8s cubic-bezier(0.16,1,0.3,1) }
+        .title{ font-family:'Bodoni Moda', serif; font-size:2.4rem; color:#2d2d2d; font-weight:300; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.4rem; line-height:1 }
+        .subtitle{ font-family:'Montserrat', sans-serif; color:#9a9a9a; font-weight:200; margin-bottom:2.6rem; font-size:0.65rem; letter-spacing:0.42em; text-transform:uppercase }
         .input-group{ position:relative; margin-bottom:2rem }
-        input{ width:100%; background:transparent; border:none; border-bottom:1px solid rgba(0,0,0,0.1); padding:12px 0; color:#2d2d2d; outline:none; transition:all 0.5s ease; text-align:center; font-size:0.9rem; letter-spacing:2px }
-        input:focus{ border-bottom-color:#b39ddb; letter-spacing:4px }
+        input{ width:100%; background:transparent; border:none; border-bottom:1px solid rgba(0,0,0,0.08); padding:10px 0; color:#2d2d2d; outline:none; transition:all 0.45s ease; text-align:center; font-size:0.85rem; letter-spacing:1.4px }
+        input:focus{ border-bottom-color:#b39ddb; letter-spacing:2.6px }
         input::placeholder{ color:#cccccc; font-weight:200; letter-spacing:1px }
-        .btn-unlock{ width:100%; padding:18px; border-radius:30px; background:#2d2d2d; color:#fff; font-size:0.8rem; font-weight:300; letter-spacing:4px; cursor:pointer; transition:all 0.5s ease; border:none; text-transform:uppercase }
+        .btn-unlock{ width:100%; padding:14px; border-radius:30px; background:#2d2d2d; color:#fff; font-size:0.75rem; font-weight:300; letter-spacing:3px; cursor:pointer; transition:all 0.45s ease; border:none; text-transform:uppercase }
         .btn-unlock:hover{ background:#4a4a4a; transform:translateY(-2px); box-shadow:0 15px 30px rgba(0,0,0,0.1) }
         #message{ margin-top:2rem; font-size:0.75rem; color:#9e9e9e; letter-spacing:1px; font-weight:200 }
         .dot-deco{ display:block; width:4px; height:4px; background:#b39ddb; border-radius:50%; margin:0 auto 1.5rem; opacity:0.5 }
