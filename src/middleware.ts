@@ -8,45 +8,6 @@
 const SITE_PASSWORD = import.meta.env.SITE_PASSWORD || "";
 const PASSWORD_COOKIE_NAME = "site_auth";
 const PASSWORD_COOKIE_MAX_AGE = 30 * 24 * 60 * 60; // 30 days in seconds
-const RATE_LIMIT_COOKIE_NAME = "auth_attempts";
-const MAX_ATTEMPTS = 5;
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes in milliseconds
-
-// In-memory store for rate limiting (in production, use Redis or similar)
-const attemptStore = new Map<string, Array<number>>();
-
-function getClientIp(ctx: any): string {
-  return (
-    ctx.request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    ctx.request.headers.get("cf-connecting-ip") ||
-    "unknown"
-  );
-}
-
-function checkRateLimit(clientIp: string): { allowed: boolean; remaining: number; resetTime: number } {
-  const now = Date.now();
-  const attempts = attemptStore.get(clientIp) || [];
-  
-  // Remove attempts older than the rate limit window
-  const recentAttempts = attempts.filter((time) => now - time < RATE_LIMIT_WINDOW);
-  
-  const remaining = Math.max(0, MAX_ATTEMPTS - recentAttempts.length);
-  const resetTime = recentAttempts.length > 0 ? recentAttempts[0] + RATE_LIMIT_WINDOW : 0;
-  
-  attemptStore.set(clientIp, recentAttempts);
-  
-  return {
-    allowed: recentAttempts.length < MAX_ATTEMPTS,
-    remaining,
-    resetTime,
-  };
-}
-
-function recordAttempt(clientIp: string): void {
-  const attempts = attemptStore.get(clientIp) || [];
-  attempts.push(Date.now());
-  attemptStore.set(clientIp, attempts);
-}
 
 export const onRequest = async (ctx: any, next: any) => {
   // Skip password check for password submission endpoint
@@ -69,9 +30,6 @@ export const onRequest = async (ctx: any, next: any) => {
     const isAuthenticated = cookies[PASSWORD_COOKIE_NAME] === SITE_PASSWORD;
 
     if (!isAuthenticated) {
-      const clientIp = getClientIp(ctx);
-      const rateLimit = checkRateLimit(clientIp);
-      
       // Return password form
       const html = `
 <!DOCTYPE html>
@@ -123,10 +81,6 @@ export const onRequest = async (ctx: any, next: any) => {
       outline: none;
       border-color: #667eea;
     }
-    input:disabled {
-      background-color: #f5f5f5;
-      cursor: not-allowed;
-    }
     button {
       width: 100%;
       padding: 0.75rem;
@@ -139,15 +93,11 @@ export const onRequest = async (ctx: any, next: any) => {
       font-weight: 600;
       transition: transform 0.2s;
     }
-    button:hover:not(:disabled) {
+    button:hover {
       transform: translateY(-2px);
     }
-    button:active:not(:disabled) {
+    button:active {
       transform: translateY(0);
-    }
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
     .error {
       color: #e53e3e;
@@ -158,23 +108,21 @@ export const onRequest = async (ctx: any, next: any) => {
     .error.show {
       display: block;
     }
-    .warning {
-      color: #f6ad55;
-      font-size: 0.875rem;
-      margin: 1rem 0 0 0;
-      display: none;
-    }
-    .warning.show {
-      display: block;
-    }
     .locked {
-      color: #c53030;
-      font-size: 0.875rem;
-      margin: 1rem 0 0 0;
+      color: #e53e3e;
+      font-weight: 600;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #fed7d7;
+      border-radius: 6px;
       display: none;
     }
     .locked.show {
       display: block;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -189,54 +137,84 @@ export const onRequest = async (ctx: any, next: any) => {
         placeholder="Enter password"
         autocomplete="current-password"
         required
-        ${!rateLimit.allowed ? 'disabled' : ''}
       >
-      <button type="submit" ${!rateLimit.allowed ? 'disabled' : ''}>
-        ${rateLimit.allowed ? 'Unlock' : 'Locked'}
-      </button>
+      <button type="submit" id="submitBtn">Unlock</button>
       <div id="error" class="error">Incorrect password</div>
-      <div id="warning" class="warning"></div>
       <div id="locked" class="locked"></div>
     </form>
   </div>
   <script>
-    const maxAttempts = ${MAX_ATTEMPTS};
-    const remaining = ${rateLimit.remaining};
-    const isLocked = ${!rateLimit.allowed};
-    const resetTime = ${rateLimit.resetTime};
-    
-    const errorEl = document.getElementById("error");
-    const warningEl = document.getElementById("warning");
-    const lockedEl = document.getElementById("locked");
-    const passwordInput = document.getElementById("password");
-    const form = document.getElementById("authForm");
-    const submitBtn = form.querySelector("button[type=submit]");
-    
-    function updateUI() {
-      if (isLocked) {
-        const now = Date.now();
-        const timeRemaining = Math.ceil((resetTime - now) / 1000);
-        if (timeRemaining > 0) {
-          const minutes = Math.ceil(timeRemaining / 60);
-          lockedEl.textContent = \`Too many attempts. Try again in \${minutes} minute\${minutes > 1 ? 's' : ''}.\`;
-          lockedEl.classList.add("show");
-          passwordInput.disabled = true;
-          submitBtn.disabled = true;
-          setTimeout(updateUI, 1000);
-        } else {
-          location.reload();
-        }
-      } else if (remaining <= 2) {
-        warningEl.textContent = \`\${remaining} attempt\${remaining !== 1 ? 's' : ''} remaining\`;
-        warningEl.classList.add("show");
+    const MAX_ATTEMPTS = 3;
+    const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const ATTEMPTS_KEY = "auth_attempts";
+    const LOCKOUT_KEY = "auth_lockout_time";
+
+    function getAttempts() {
+      const stored = localStorage.getItem(ATTEMPTS_KEY);
+      if (!stored) return 0;
+      return parseInt(stored, 10);
+    }
+
+    function setAttempts(count) {
+      localStorage.setItem(ATTEMPTS_KEY, count.toString());
+    }
+
+    function getLockoutTime() {
+      const stored = localStorage.getItem(LOCKOUT_KEY);
+      if (!stored) return null;
+      return parseInt(stored, 10);
+    }
+
+    function setLockout() {
+      localStorage.setItem(LOCKOUT_KEY, (Date.now() + LOCKOUT_TIME).toString());
+    }
+
+    function clearLockout() {
+      localStorage.removeItem(LOCKOUT_KEY);
+      localStorage.removeItem(ATTEMPTS_KEY);
+    }
+
+    function updateLockoutUI() {
+      const lockoutTime = getLockoutTime();
+      const now = Date.now();
+      
+      if (lockoutTime && now < lockoutTime) {
+        const remainingMs = lockoutTime - now;
+        const remainingMins = Math.ceil(remainingMs / 60000);
+        const lockedEl = document.getElementById("locked");
+        lockedEl.textContent = \`Too many failed attempts. Please try again in \${remainingMins} minute\${remainingMins > 1 ? 's' : ''}.\`;
+        lockedEl.classList.add("show");
+        document.getElementById("submitBtn").disabled = true;
+        document.getElementById("password").disabled = true;
+        
+        const interval = setInterval(() => {
+          const currentLockout = getLockoutTime();
+          const currentNow = Date.now();
+          if (!currentLockout || currentNow >= currentLockout) {
+            clearInterval(interval);
+            clearLockout();
+            location.reload();
+          }
+        }, 10000); // Check every 10 seconds
+      } else if (lockoutTime) {
+        clearLockout();
       }
     }
-    
-    updateUI();
-    
-    form.addEventListener("submit", async (e) => {
+
+    function checkRateLimit() {
+      updateLockoutUI();
+      const lockoutTime = getLockoutTime();
+      return !lockoutTime || Date.now() >= lockoutTime;
+    }
+
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const password = passwordInput.value;
+      
+      if (!checkRateLimit()) {
+        return;
+      }
+
+      const password = document.getElementById("password").value;
       const response = await fetch("/__auth", {
         method: "POST",
         body: JSON.stringify({ password }),
@@ -244,17 +222,31 @@ export const onRequest = async (ctx: any, next: any) => {
       });
       
       if (response.ok) {
+        clearLockout();
         window.location.reload();
       } else {
-        errorEl.classList.add("show");
-        warningEl.classList.remove("show");
-        passwordInput.value = "";
-        passwordInput.focus();
+        const attempts = getAttempts() + 1;
+        setAttempts(attempts);
         
-        // Refresh to get updated attempt count
-        setTimeout(() => location.reload(), 1500);
+        const errorEl = document.getElementById("error");
+        const remaining = MAX_ATTEMPTS - attempts;
+        
+        if (remaining <= 0) {
+          setLockout();
+          updateLockoutUI();
+          errorEl.classList.remove("show");
+        } else {
+          errorEl.textContent = \`Incorrect password. \${remaining} attempt\${remaining > 1 ? 's' : ''} remaining.\`;
+          errorEl.classList.add("show");
+        }
+        
+        document.getElementById("password").value = "";
+        document.getElementById("password").focus();
       }
     });
+
+    // Check lockout status on page load
+    checkRateLimit();
   </script>
 </body>
 </html>
