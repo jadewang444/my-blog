@@ -132,6 +132,7 @@ export const onRequest = async (ctx: any, next: any) => {
 `;
       return new Response(html, { status: 401, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
     }
+  }
 
   const response = await next();
 
