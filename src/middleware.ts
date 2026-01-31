@@ -145,7 +145,7 @@ export const onRequest = async (ctx: any, next: any) => {
   </div>
   <script>
     const MAX_ATTEMPTS = 3;
-    const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const LOCKOUT_TIME = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     const ATTEMPTS_KEY = "auth_attempts";
     const LOCKOUT_KEY = "auth_lockout_time";
 
@@ -180,9 +180,9 @@ export const onRequest = async (ctx: any, next: any) => {
       
       if (lockoutTime && now < lockoutTime) {
         const remainingMs = lockoutTime - now;
-        const remainingMins = Math.ceil(remainingMs / 60000);
+        const remainingHours = Math.ceil(remainingMs / 3600000);
         const lockedEl = document.getElementById("locked");
-        lockedEl.textContent = \`Too many failed attempts. Please try again in \${remainingMins} minute\${remainingMins > 1 ? 's' : ''}.\`;
+        lockedEl.textContent = \`Too many failed attempts. Please try again in \${remainingHours} hour\${remainingHours > 1 ? 's' : ''}.\`;
         lockedEl.classList.add("show");
         document.getElementById("submitBtn").disabled = true;
         document.getElementById("password").disabled = true;
