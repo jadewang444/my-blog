@@ -39,97 +39,174 @@ export const onRequest = async (ctx: any, next: any) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Protected Site</title>
   <style>
+    :root {
+      --primary-color: #2a2a28;
+      --secondary-color: #50504d;
+      --weak-color: #9f9f9c;
+      --background-color: #fffffd;
+      --block-color: #eeeeee;
+      --error-color: #d32f2f;
+      --serif: "Cormorant Garamond", "Noto Serif SC", serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary-color: #dddddb;
+        --secondary-color: #aaaaa8;
+        --weak-color: #5d5d5a;
+        --background-color: #0e0e0c;
+        --block-color: #1e1e1e;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 2rem 1rem;
+      font-family: var(--serif);
+      background-color: var(--background-color);
+      color: var(--primary-color);
+      line-height: 1.65;
     }
+
     .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       width: 100%;
-      max-width: 400px;
-      text-align: center;
+      max-width: 480px;
+      padding: 3rem 2.5rem;
+      background-color: var(--block-color);
+      border: 1px solid rgba(42, 42, 40, 0.1);
     }
+
+    @media (prefers-color-scheme: dark) {
+      .container {
+        border-color: rgba(221, 221, 219, 0.1);
+      }
+    }
+
+    .lock-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
     h1 {
-      margin: 0 0 1rem 0;
-      color: #333;
-      font-size: 1.5rem;
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--primary-color);
     }
-    p {
-      color: #666;
-      margin: 1rem 0;
+
+    .subtitle {
+      margin: 0 0 2rem 0;
       font-size: 0.95rem;
+      color: var(--secondary-color);
+      font-weight: 400;
     }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
     input {
       width: 100%;
-      padding: 0.75rem;
-      margin: 1rem 0;
-      border: 2px solid #ddd;
-      border-radius: 6px;
+      padding: 0.875rem 1rem;
+      font-family: inherit;
       font-size: 1rem;
-      box-sizing: border-box;
-      transition: border-color 0.2s;
+      background-color: var(--background-color);
+      color: var(--primary-color);
+      border: 1px solid var(--weak-color);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
+
+    input::placeholder {
+      color: var(--weak-color);
+    }
+
     input:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(42, 42, 40, 0.05);
     }
+
+    @media (prefers-color-scheme: dark) {
+      input:focus {
+        box-shadow: 0 0 0 3px rgba(221, 221, 219, 0.05);
+      }
+    }
+
     button {
-      width: 100%;
-      padding: 0.75rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 6px;
+      padding: 0.875rem 1rem;
+      font-family: var(--serif);
       font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      border: none;
       cursor: pointer;
-      font-weight: 600;
-      transition: transform 0.2s;
+      transition: opacity 0.2s ease;
     }
-    button:hover {
-      transform: translateY(-2px);
+
+    button:hover:not(:disabled) {
+      opacity: 0.85;
     }
-    button:active {
-      transform: translateY(0);
+
+    button:active:not(:disabled) {
+      opacity: 0.7;
     }
-    .error {
-      color: #e53e3e;
-      font-size: 0.875rem;
-      margin: 1rem 0 0 0;
-      display: none;
-    }
-    .error.show {
-      display: block;
-    }
-    .locked {
-      color: #e53e3e;
-      font-weight: 600;
-      margin: 1rem 0;
-      padding: 1rem;
-      background: #fed7d7;
-      border-radius: 6px;
-      display: none;
-    }
-    .locked.show {
-      display: block;
-    }
+
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    .message {
+      padding: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      border-left: 2px solid;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .error {
+      border-left-color: var(--error-color);
+      background-color: rgba(211, 47, 47, 0.08);
+      color: var(--error-color);
+    }
+
+    .locked {
+      border-left-color: var(--error-color);
+      background-color: rgba(211, 47, 47, 0.08);
+      color: var(--error-color);
+    }
+
+    .attempts-info {
+      font-size: 0.875rem;
+      color: var(--secondary-color);
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🔒 Protected Site</h1>
-    <p>This site is password protected.</p>
+    <span class="lock-icon">🔐</span>
+    <h1>Protected</h1>
+    <p class="subtitle">This site is password protected.</p>
     <form id="authForm">
       <input
         type="password"
@@ -139,8 +216,8 @@ export const onRequest = async (ctx: any, next: any) => {
         required
       >
       <button type="submit" id="submitBtn">Unlock</button>
-      <div id="error" class="error">Incorrect password</div>
-      <div id="locked" class="locked"></div>
+      <div id="error" class="message error"></div>
+      <div id="locked" class="message locked"></div>
     </form>
   </div>
   <script>
